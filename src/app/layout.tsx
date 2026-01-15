@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "BookNGo",
@@ -16,7 +17,10 @@ export default function RootLayout({
     <html lang="en">
       <body suppressHydrationWarning={true}>
         <Navbar />
-        <main className="pt-16 min-h-screen" > {children}</main>
+        <main className="pt-16 min-h-screen flex flex-col">
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </main>
       </body>
     </html>
   );

@@ -1,5 +1,8 @@
-// RegionCard.tsx
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
+import { FiMapPin } from "react-icons/fi";
 
 type RegionCardProps = {
   name: string;
@@ -8,34 +11,43 @@ type RegionCardProps = {
 
 export default function RegionCard({ name, slug }: RegionCardProps) {
   return (
-    <div className="relative aspect-[4.5/3] rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all group">
+    <Link
+      href={`/${slug}`}
+      className="group block relative aspect-[4.5/3] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+      aria-label={`View resorts in ${name}`}
+    >
       {/* Background Image with Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
-      <img
-        src="/images/home-bg.jpg"
-        alt=""
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      <div className="absolute inset-0">
+        <Image
+          src="/images/home-bg.jpg"
+          alt={`${name} region background`}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-500"
+          sizes="(max-width: 768px) 85vw, (max-width: 1024px) 50vw, 33vw"
+          quality={85}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30 group-hover:from-black/90 transition-colors duration-300" />
+      </div>
 
       {/* Content Container */}
       <div className="relative h-full flex flex-col justify-between p-6">
         {/* Region Name - Top Center */}
         <div className="text-center">
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-lg">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm mb-3 group-hover:bg-white/30 transition-colors">
+            <FiMapPin className="w-6 h-6 text-white" />
+          </div>
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 drop-shadow-lg group-hover:scale-105 transition-transform duration-300">
             {name}
           </h3>
         </div>
 
         {/* Search Button - Bottom Center */}
         <div className="text-center">
-          <Link
-            href={`/${slug}`}
-            className="inline-flex items-center justify-center px-5 py-3 rounded-full border-2 border-white text-white hover:bg-white/10 hover:border-white/80 hover:backdrop-blur-sm transition-all duration-300 font-medium text-lg"
-          >
+          <div className="inline-flex items-center justify-center px-6 py-3 rounded-full border-2 border-white/90 text-white font-semibold text-base group-hover:bg-white/10 group-hover:border-white transition-all duration-300 backdrop-blur-sm">
             Search Resorts
-          </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
