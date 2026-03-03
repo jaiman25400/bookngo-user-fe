@@ -18,7 +18,6 @@ type SortOption = "name-asc" | "name-desc" | "city-asc" | "city-desc";
 interface RegionListingProps {
   results: RegionListingItem[];
   regionName: string;
-  regionSlug: string;
   activityLabel: string;
   itemLabel: string;
   itemLabelPlural: string;
@@ -83,7 +82,6 @@ function VenueCard({
 export default function RegionListing({
   results,
   regionName,
-  regionSlug,
   activityLabel,
   itemLabel,
   itemLabelPlural,

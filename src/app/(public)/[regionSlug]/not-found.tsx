@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FiAlertCircle, FiHome, FiArrowLeft, FiSearch } from "react-icons/fi";
+import { FiAlertCircle, FiHome, FiSearch } from "react-icons/fi";
 
 export default function NotFound() {
   return (
@@ -14,7 +14,7 @@ export default function NotFound() {
         </h1>
         
         <p className="text-lg text-gray-600 mb-8">
-          Sorry, we couldn't find the page you're looking for. It may have been moved or doesn't exist.
+          Sorry, we couldn&apos;t find the page you&apos;re looking for. It may have been moved or doesn&apos;t exist.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

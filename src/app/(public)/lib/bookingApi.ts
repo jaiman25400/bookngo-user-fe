@@ -1,11 +1,14 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3000";
 
 interface ApiResponse<T> {
   data?: T;
   error?: string;
 }
 
-export async function getBookingDetailsByBookingID(bookingId: string) {
+export async function getBookingDetailsByBookingID(
+  bookingId: string
+): Promise<unknown> {
   const response = await fetch(
     `${API_BASE_URL}/user/bookings/bookingID?id=${bookingId}`
   );
@@ -16,7 +19,7 @@ export async function getBookingDetailsByBookingID(bookingId: string) {
 }
 
 // Confirm cash payment
-export async function confirmCashPayment(bookingId: string) {
+export async function confirmCashPayment(bookingId: string): Promise<unknown> {
   const response = await fetch(`${API_BASE_URL}/user/bookings/confirmBooking`, {
     method: "POST",
     headers: {
@@ -31,9 +34,9 @@ export async function confirmCashPayment(bookingId: string) {
   return response.json();
 }
 
-export async function fetchActivityDetailsUsingNonOfTickets(
+export async function fetchActivityDetailsUsingNonOfTickets<T = unknown>(
   activityId: string
-): Promise<ApiResponse<any>> {
+): Promise<ApiResponse<T>> {
   try {
     const response = await fetch(
       `${API_BASE_URL}/user/vendors/activity/${activityId}`
@@ -42,7 +45,7 @@ export async function fetchActivityDetailsUsingNonOfTickets(
       return { error: `API request failed with status ${response.status}` };
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as T;
     console.log("Data Booking Confirmation :", data);
     return { data };
   } catch (error) {
@@ -53,8 +56,11 @@ export async function fetchActivityDetailsUsingNonOfTickets(
 }
 
 export async function fetchInventoryUsingCustomerSlug(
-  customerSlug: string, bookingDate: Date | null, bookingTime: string | null, activityId: string | null
-): Promise<ApiResponse<any>> {
+  customerSlug: string,
+  bookingDate: Date | null,
+  bookingTime: string | null,
+  activityId: string | null
+): Promise<ApiResponse<unknown>> {
   try {
     const response = await fetch(
       `${API_BASE_URL}/user/bookings/rentals/customerSlug?slug=${customerSlug}&bookingDate=${bookingDate?.toISOString()}&bookingTime=${bookingTime}&activityId=${activityId}`
@@ -72,10 +78,10 @@ export async function fetchInventoryUsingCustomerSlug(
   }
 }
 
-export async function fetchSlotAvailableUsingDate(
+export async function fetchSlotAvailableUsingDate<T = unknown>(
   activityId: string,
   date: string
-): Promise<ApiResponse<any>> {
+): Promise<ApiResponse<T>> {
   try {
     const response = await fetch(
       `${API_BASE_URL}/user/bookings/check-availability?date=${date}&activityId=${activityId}`
@@ -83,7 +89,7 @@ export async function fetchSlotAvailableUsingDate(
     if (!response.ok) {
       return { error: `API request failed with status ${response.status}` };
     }
-    const data = await response.json();
+    const data = (await response.json()) as T;
     console.log("Slot Availability Data: API", data);
     return { data };
   } catch (error) {
@@ -94,9 +100,9 @@ export async function fetchSlotAvailableUsingDate(
 }
 
 // Updated submitUser Data function
-export async function submitUserCheckOutData(
-  payload: any
-): Promise<ApiResponse<any>> {
+export async function submitUserCheckOutData<T = unknown>(
+  payload: unknown
+): Promise<ApiResponse<T>> {
   try {
     console.log("API PAYLOAD :", payload);
     const response = await fetch(
@@ -112,7 +118,7 @@ export async function submitUserCheckOutData(
       return { error: `API request failed with status ${response.status}` };
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as T;
     console.log("Booking Confirmation Response:", data);
     return { data };
   } catch (error) {

@@ -47,7 +47,6 @@ export default async function RegionPage({ params }: Props) {
     <RegionListing
       results={items}
       regionName={regionName}
-      regionSlug={regionSlug}
       activityLabel="Skiing"
       itemLabel="resort"
       itemLabelPlural="resorts"

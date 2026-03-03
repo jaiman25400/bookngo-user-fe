@@ -77,6 +77,17 @@ type ActivityData = {
   max_per_slot: number;
 };
 
+type SlotAvailabilityApi = {
+  success: boolean;
+  data?: {
+    slots?: SlotInfo[];
+  };
+};
+
+type ProceedToCheckoutApi = {
+  BookingID?: string;
+};
+
 interface SlotInfo {
   slotTime: string;
   availableTickets: number;
@@ -170,7 +181,7 @@ export default function BookingConfirmationPage() {
 
       setError(null);
       try {
-        const response = await fetchActivityDetailsUsingNonOfTickets(
+        const response = await fetchActivityDetailsUsingNonOfTickets<ActivityData>(
           booking.activityId
         );
 
@@ -230,7 +241,7 @@ export default function BookingConfirmationPage() {
 
       try {
         const formattedDate = selectedDate.toISOString().split("T")[0];
-        const response = await fetchSlotAvailableUsingDate(
+        const response = await fetchSlotAvailableUsingDate<SlotAvailabilityApi>(
           booking.activityId,
           formattedDate
         );
@@ -333,7 +344,7 @@ export default function BookingConfirmationPage() {
         })),
       };
 
-      const result = await submitUserCheckOutData(payload);
+      const result = await submitUserCheckOutData<ProceedToCheckoutApi>(payload);
 
       if (result.error) {
         throw new Error(result.error);

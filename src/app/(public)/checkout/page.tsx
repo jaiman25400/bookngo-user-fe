@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   confirmCashPayment,
   getBookingDetailsByBookingID,
@@ -57,7 +57,6 @@ interface BookingData {
 }
 
 export default function PaymentPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [booking, setBooking] = useState<BookingData | null>(null);
