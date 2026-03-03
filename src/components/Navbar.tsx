@@ -16,6 +16,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change for instant feel
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [pathname]);
+
   const isHome = pathname === "/";
   const textColor = isHome && !isScrolled ? "text-white" : "text-gray-800";
   const hoverColor = isHome && !isScrolled ? "hover:text-white/80" : "hover:text-gray-600";
@@ -37,6 +42,7 @@ export default function Navbar() {
             </span>
             <Link
               href="/"
+              prefetch={true}
               className={`ml-2 text-xl font-bold ${textColor} hover:opacity-80 transition-opacity`}
             >
               BOOK N GO
@@ -68,41 +74,31 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/skiing"
+              prefetch={true}
               className={`${textColor} ${hoverColor} transition-colors`}
             >
               Ski Slopes
             </Link>
             <Link
               href="/skates"
+              prefetch={true}
               className={`${textColor} ${hoverColor} transition-colors`}
             >
               Skating Rings
             </Link>
             <Link
-              href="/activities"
+              href="/about"
+              prefetch={true}
               className={`${textColor} ${hoverColor} transition-colors`}
             >
-              Activities
+              About Us
             </Link>
-          </div>
-
-          {/* Desktop Auth Links */}
-          <div className="hidden md:flex items-center space-x-4">
             <Link
-              href="/login"
+              href="/contact"
+              prefetch={true}
               className={`${textColor} ${hoverColor} transition-colors`}
             >
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className={`px-4 py-2 rounded-lg transition-colors ${
-                isHome && !isScrolled
-                  ? "bg-white text-gray-800 hover:bg-gray-100"
-                  : "bg-sky-600 text-white hover:bg-sky-700"
-              }`}
-            >
-              Sign Up
+              Contact Us
             </Link>
           </div>
         </div>
@@ -126,28 +122,19 @@ export default function Navbar() {
                 Skating Rings
               </Link>
               <Link
-                href="/activities"
+                href="/about"
                 className="block text-gray-800 hover:text-sky-600 py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Activities
+                About Us
               </Link>
-              <div className="border-t pt-4">
-                <Link
-                  href="/login"
-                  className="block text-gray-800 hover:text-sky-600 py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  className="block w-full text-center bg-sky-600 text-white py-2 rounded-lg hover:bg-sky-700 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Sign Up
-                </Link>
-              </div>
+              <Link
+                href="/contact"
+                className="block text-gray-800 hover:text-sky-600 py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact Us
+              </Link>
             </div>
           </div>
         )}

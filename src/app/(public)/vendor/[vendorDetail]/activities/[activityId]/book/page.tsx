@@ -3,7 +3,7 @@ import { fetchVendorActivityByID, type ActivityData } from "../vendorActivityApi
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { FiArrowLeft, FiDollarSign, FiClock, FiUsers } from "react-icons/fi";
+import { FiArrowLeft, FiDollarSign, FiClock, FiUsers, FiExternalLink } from "react-icons/fi";
 
 type Props = {
   params: Promise<{
@@ -34,6 +34,9 @@ export default async function BookingPage({ params }: Props) {
   const imageUrl = data.activity_thumbnail_image
     ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${data.activity_thumbnail_image}`
     : null;
+
+  const useExternalBooking =
+    data.redirect_to_external_website && data.external_booking_url;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -85,23 +88,52 @@ export default async function BookingPage({ params }: Props) {
         </Link>
 
         <div className="grid gap-8 lg:grid-cols-3">
-          {/* Main Content - Booking Form */}
+          {/* Main Content - Booking Form or External Redirect */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
-              <div className="mb-8">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                  Complete Your Booking
-                </h1>
-                <p className="text-gray-600">
-                  Please fill in your details to proceed with the booking
-                </p>
+            {useExternalBooking ? (
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 md:p-12 text-center">
+                <div className="max-w-md mx-auto">
+                  <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+                    Book on the resort&apos;s website
+                  </h1>
+                  <p className="text-gray-600 mb-8">
+                    This activity is booked through the resort&apos;s own booking system. You&apos;ll be taken to their website to complete your reservation.
+                  </p>
+                  <a
+                    href={data.external_booking_url!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-sky-600 hover:bg-sky-700 text-white font-semibold py-4 px-8 rounded-xl transition-colors"
+                  >
+                    <span>Go to booking site</span>
+                    <FiExternalLink className="w-5 h-5" />
+                  </a>
+                  <Link
+                    href={`/vendor/${vendorDetail}/activities/${activityId}`}
+                    className="mt-6 inline-flex items-center text-gray-600 hover:text-gray-900 text-sm"
+                  >
+                    <FiArrowLeft className="w-4 h-4 mr-2" />
+                    Back to activity
+                  </Link>
+                </div>
               </div>
+            ) : (
+              <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
+                <div className="mb-8">
+                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                    Complete Your Booking
+                  </h1>
+                  <p className="text-gray-600">
+                    Please fill in your details to proceed with the booking
+                  </p>
+                </div>
 
-              <BookingForm
-                activityId={activityId}
-                vendorSlug={vendorDetail}
-              />
-            </div>
+                <BookingForm
+                  activityId={activityId}
+                  vendorSlug={vendorDetail}
+                />
+              </div>
+            )}
           </div>
 
           {/* Sidebar - Booking Summary */}

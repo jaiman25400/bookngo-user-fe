@@ -11,13 +11,17 @@ export interface ActivityData {
   base_price: string;
   duration_hours: string | number;
   activity_thumbnail_image: string | null;
-  activity_image_gallery?: string[] | null; // Array of gallery image paths (matches backend field name)
+  activity_image_gallery?: string[] | null;
   activity_description: string | null;
   age_group: string | null;
   requires_waiver?: boolean;
   safety_instructions?: string | null;
   max_per_slot?: number;
   slot_interval_minutes?: number;
+  /** When true, booking is done on the company site; use external_booking_url */
+  redirect_to_external_website?: boolean;
+  /** URL to redirect users for booking (when redirect_to_external_website is true) */
+  external_booking_url?: string | null;
 }
 
 export async function fetchVendorActivityByID(

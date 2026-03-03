@@ -110,35 +110,24 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/activities"
+                  href="/about"
                   className="text-sm hover:text-sky-400 transition-colors inline-flex items-center group"
                 >
                   <span className="group-hover:translate-x-1 transition-transform inline-block">
                     →
                   </span>
-                  <span className="ml-2">Activities</span>
+                  <span className="ml-2">About Us</span>
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/login"
+                  href="/contact"
                   className="text-sm hover:text-sky-400 transition-colors inline-flex items-center group"
                 >
                   <span className="group-hover:translate-x-1 transition-transform inline-block">
                     →
                   </span>
-                  <span className="ml-2">Login</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/signup"
-                  className="text-sm hover:text-sky-400 transition-colors inline-flex items-center group"
-                >
-                  <span className="group-hover:translate-x-1 transition-transform inline-block">
-                    →
-                  </span>
-                  <span className="ml-2">Sign Up</span>
+                  <span className="ml-2">Contact Us</span>
                 </Link>
               </li>
             </ul>

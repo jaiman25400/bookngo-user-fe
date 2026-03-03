@@ -10,6 +10,7 @@ import {
   FiCheckCircle,
   FiInfo,
   FiShield,
+  FiExternalLink,
 } from "react-icons/fi";
 import ImageGallery from "./ImageGallery";
 
@@ -225,15 +226,37 @@ export default async function ActivityPage({ params }: Props) {
                   </div>
                 )}
 
-                {/* Book Button */}
-                <Link
-                  href={`/vendor/${vendorDetail}/activities/${activityId}/book`}
-                  className="block w-full"
-                >
-                  <button className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center">
-                    <span>Book Now</span>
-                  </button>
-                </Link>
+                {/* Book CTA: external site vs internal booking */}
+                {data.redirect_to_external_website && data.external_booking_url ? (
+                  <>
+                    <p className="text-sm text-gray-600 text-center">
+                      Booking is handled on the resort&apos;s website. You&apos;ll be redirected to complete your reservation.
+                    </p>
+                    <a
+                      href={data.external_booking_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full"
+                    >
+                      <button
+                        type="button"
+                        className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                      >
+                        <span>Book on company website</span>
+                        <FiExternalLink className="w-5 h-5" />
+                      </button>
+                    </a>
+                  </>
+                ) : (
+                  <Link
+                    href={`/vendor/${vendorDetail}/activities/${activityId}/book`}
+                    className="block w-full"
+                  >
+                    <button className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center">
+                      <span>Book Now</span>
+                    </button>
+                  </Link>
+                )}
 
                 {/* Cancellation Policy */}
                 <div className="flex items-start text-sm text-gray-600 pt-4 border-t border-gray-200">

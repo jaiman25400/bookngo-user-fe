@@ -1,4 +1,4 @@
-import { fetchRegionResorts, type Resort } from "./regionApi";
+import { fetchSkatingByRegion, type SkatingRegionVenue } from "../skatingApi";
 import { notFound } from "next/navigation";
 import RegionListing, { type RegionListingItem } from "@/components/RegionListing";
 
@@ -12,30 +12,30 @@ function formatRegionName(slug: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function mapToListingItems(resorts: Resort[]): RegionListingItem[] {
+function mapToListingItems(venues: SkatingRegionVenue[]): RegionListingItem[] {
   const base = process.env.NEXT_PUBLIC_API_BASE_URL || "";
-  return resorts.map((r) => ({
-    id: r.id,
-    name: r.customer_display_name || "Unnamed Resort",
-    slug: r.customer_slug,
-    city: r.customer_city || "",
-    imageUrl: r.home_image_url ? `${base}${r.home_image_url}` : null,
+  return venues.map((v) => ({
+    id: v.id,
+    name: v.customer_display_name || "Unnamed Venue",
+    slug: v.customer_slug,
+    city: v.customer_city || "",
+    imageUrl: v.home_image_url ? `${base}${v.home_image_url}` : null,
   }));
 }
 
-export default async function RegionPage({ params }: Props) {
+export default async function SkatingRegionPage({ params }: Props) {
   let regionSlug: string;
   let regionName: string;
 
   try {
-    const resolvedParams = await params;
-    regionSlug = resolvedParams.regionSlug;
+    const resolved = await params;
+    regionSlug = resolved.regionSlug;
     regionName = formatRegionName(regionSlug);
   } catch {
     notFound();
   }
 
-  const { data, error } = await fetchRegionResorts(regionName);
+  const { data, error } = await fetchSkatingByRegion(regionName);
 
   if (error || !data || data.count === 0 || !data.results?.length) {
     notFound();
@@ -48,11 +48,11 @@ export default async function RegionPage({ params }: Props) {
       results={items}
       regionName={regionName}
       regionSlug={regionSlug}
-      activityLabel="Skiing"
-      itemLabel="resort"
-      itemLabelPlural="resorts"
-      basePath="/skiing"
-      emptyMessage="Try adjusting your search or filters to find resorts in this region."
+      activityLabel="Ice Skating"
+      itemLabel="venue"
+      itemLabelPlural="rinks"
+      basePath="/skates"
+      emptyMessage="Try adjusting your search or filters to find rinks in this region."
     />
   );
 }

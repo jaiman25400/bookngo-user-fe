@@ -11,11 +11,14 @@ const regions = [
 ];
 export default function RegionsScroll() {
   return (
-    <section className="py-16 md:py-20">
-      <div className="container mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
-          Find Slopes by Region
+    <section className="py-12 md:py-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-2">
+          Find slopes by region
         </h2>
+        <p className="text-slate-600 text-base mb-8">
+          Browse ski resorts in your province
+        </p>
         
         {/* Scroll Container */}
         <div className="relative">
