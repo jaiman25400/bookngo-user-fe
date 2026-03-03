@@ -90,7 +90,9 @@ export default function PaymentPage() {
       try {
         setLoading(true);
         setError(null);
-        const bookingData = await getBookingDetailsByBookingID(bookingId);
+        const bookingData = await getBookingDetailsByBookingID<BookingData>(
+          bookingId
+        );
 
         if (!bookingData) {
           setError("Booking details not found. The booking may have expired.");

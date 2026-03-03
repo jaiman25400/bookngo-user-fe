@@ -6,20 +6,22 @@ interface ApiResponse<T> {
   error?: string;
 }
 
-export async function getBookingDetailsByBookingID(
+export async function getBookingDetailsByBookingID<T = unknown>(
   bookingId: string
-): Promise<unknown> {
+): Promise<T> {
   const response = await fetch(
     `${API_BASE_URL}/user/bookings/bookingID?id=${bookingId}`
   );
   if (!response.ok) {
     throw new Error("Failed to fetch booking details");
   }
-  return response.json();
+  return (await response.json()) as T;
 }
 
 // Confirm cash payment
-export async function confirmCashPayment(bookingId: string): Promise<unknown> {
+export async function confirmCashPayment<T = unknown>(
+  bookingId: string
+): Promise<T> {
   const response = await fetch(`${API_BASE_URL}/user/bookings/confirmBooking`, {
     method: "POST",
     headers: {
@@ -31,7 +33,7 @@ export async function confirmCashPayment(bookingId: string): Promise<unknown> {
   if (!response.ok) {
     throw new Error("Payment confirmation failed");
   }
-  return response.json();
+  return (await response.json()) as T;
 }
 
 export async function fetchActivityDetailsUsingNonOfTickets<T = unknown>(
