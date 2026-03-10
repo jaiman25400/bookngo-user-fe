@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
-// next.config.js
-const nextConfig = {
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -13,6 +12,11 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "your-production-domain.com",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "bookngo-backend-pqx1.onrender.com",
         pathname: "/uploads/**",
       },
       {
