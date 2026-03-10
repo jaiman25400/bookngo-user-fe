@@ -92,7 +92,7 @@ export async function fetchSlotAvailableUsingDate<T = unknown>(
       return { error: `API request failed with status ${response.status}` };
     }
     const data = (await response.json()) as T;
-    console.log("Slot Availability Data: API", data);
+    console.log("Slot Availability Data:: API", data);
     return { data };
   } catch (error) {
     return {
