@@ -225,13 +225,14 @@ const SkatesPage = () => {
   }, [venues, router]);
 
   const handleVenueClick = useCallback((venue: SkatingVenue) => {
-    setSelectedVenue(venue);
-
-    // On mobile, switch to map view when a venue is selected
+    // On mobile: behave like "View venue" and navigate directly
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
-      setMobileView("map");
+      router.push(`/vendor/${venue.slug}`);
+      return;
     }
 
+    // On desktop: highlight on map without navigating
+    setSelectedVenue(venue);
     if (map.current) {
       map.current.flyTo({
         center: [venue.longitude, venue.latitude],
@@ -249,7 +250,7 @@ const SkatesPage = () => {
         setTooltipPosition(null);
       }, 2500);
     }
-  }, []);
+  }, [router]);
 
   const handleViewVenue = useCallback(
     (venue: SkatingVenue) => {
@@ -451,14 +452,13 @@ const SkatesPage = () => {
 
       {/* Map Panel */}
       <div
-        className={`flex-1 relative min-h-[50vh] lg:min-h-0 ${
+        className={`flex-1 relative ${
           mobileView === "map" ? "block" : "hidden lg:block"
         }`}
       >
         <div
           ref={mapContainer}
-          className="w-full h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner bg-slate-200"
-          style={{ minHeight: "400px" }}
+          className="w-full h-72 lg:h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner bg-slate-200"
         />
         {process.env.NEXT_PUBLIC_MAPBOX_TOKEN && mapLoaded && (
           <div className="absolute inset-0 pointer-events-none rounded-none lg:rounded-l-2xl">

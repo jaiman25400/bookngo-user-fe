@@ -131,7 +131,7 @@ export default function RegionListing({
   const hasActiveFilters = searchQuery.trim() !== "" || cityFilter !== "all";
 
   return (
-    <div className="min-h-screen bg-white pt-16">
+    <div className="min-h-screen bg-white pt-4 md:pt-6 lg:pt-8">
       {/* Hero */}
       <div className="relative text-white">
         {heroImageUrl && (
