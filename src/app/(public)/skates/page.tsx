@@ -34,6 +34,7 @@ const SkatesPage = () => {
   const [hoveredVenue, setHoveredVenue] = useState<SkatingVenue | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
   const hoveredVenueRef = useRef<SkatingVenue | null>(null);
+  const [showMobileMap, setShowMobileMap] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -225,6 +226,12 @@ const SkatesPage = () => {
 
   const handleVenueClick = useCallback((venue: SkatingVenue) => {
     setSelectedVenue(venue);
+
+    // On mobile, open the map overlay when a venue is selected
+    if (typeof window !== "undefined" && window.innerWidth < 1024) {
+      setShowMobileMap(true);
+    }
+
     if (map.current) {
       map.current.flyTo({
         center: [venue.longitude, venue.latitude],
@@ -327,6 +334,22 @@ const SkatesPage = () => {
               {filteredVenues.length} result{filteredVenues.length !== 1 ? "s" : ""}
             </p>
           )}
+
+          {/* Mobile map toggle */}
+          <div className="mt-3 flex items-center justify-between lg:hidden">
+            <p className="text-xs text-slate-500">
+              Tap a skating ring to highlight it on the map.
+            </p>
+            {process.env.NEXT_PUBLIC_MAPBOX_TOKEN && (
+              <button
+                type="button"
+                onClick={() => setShowMobileMap(true)}
+                className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-sky-600 text-white shadow-sm hover:bg-sky-700 transition-colors"
+              >
+                View map
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
@@ -410,10 +433,16 @@ const SkatesPage = () => {
       </div>
 
       {/* Map Panel */}
-      <div className="flex-1 relative min-h-[50vh] lg:min-h-0">
+      <div
+        className={
+          showMobileMap
+            ? "fixed inset-0 z-40 lg:static lg:flex-1 lg:relative bg-slate-900/80 lg:bg-transparent"
+            : "hidden lg:block lg:flex-1 lg:relative"
+        }
+      >
         <div
           ref={mapContainer}
-          className="w-full h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner"
+          className="w-full h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner bg-slate-200"
           style={{ minHeight: "400px" }}
         />
         {process.env.NEXT_PUBLIC_MAPBOX_TOKEN && mapLoaded && (
@@ -453,6 +482,18 @@ const SkatesPage = () => {
               <p className="text-slate-500 text-sm mt-1">Add NEXT_PUBLIC_MAPBOX_TOKEN to enable the map</p>
             </div>
           </div>
+        )}
+
+        {/* Mobile close button for map overlay */}
+        {showMobileMap && (
+          <button
+            type="button"
+            onClick={() => setShowMobileMap(false)}
+            className="absolute top-4 right-4 z-50 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white text-slate-800 shadow-md border border-slate-200 lg:hidden"
+            aria-label="Close map"
+          >
+            <FiX className="w-5 h-5" />
+          </button>
         )}
       </div>
 
