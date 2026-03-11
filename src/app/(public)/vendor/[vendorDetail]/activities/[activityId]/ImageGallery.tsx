@@ -51,7 +51,11 @@ export default function ImageGallery({
     return null;
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+  const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || "").replace(/\/$/, "");
+  const currentImagePath = images[currentIndex];
+  const currentImageSrc = currentImagePath
+    ? `${baseUrl}${currentImagePath.startsWith("/") ? "" : "/"}${encodeURI(currentImagePath)}`
+    : "";
 
   return (
     <>
@@ -60,7 +64,7 @@ export default function ImageGallery({
         {/* Main Large Image */}
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-gray-100 shadow-lg group">
           <Image
-            src={`${baseUrl}${images[currentIndex]}`}
+            src={currentImageSrc}
             alt={`${activityName} - Image ${currentIndex + 1}`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 66vw"
@@ -124,7 +128,7 @@ export default function ImageGallery({
             {/* Main Fullscreen Image */}
             <div className="relative w-full h-full max-h-[90vh]">
               <Image
-                src={`${baseUrl}${images[currentIndex]}`}
+                src={currentImageSrc}
                 alt={`${activityName} - Image ${currentIndex + 1}`}
                 fill
                 sizes="100vw"

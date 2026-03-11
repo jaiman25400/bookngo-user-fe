@@ -4,6 +4,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { apiImageUrl } from "../lib/apiImageUrl";
 import { fetchSkiingData, type SkiArea } from "./skiingApi";
 import {
   FiMapPin,
@@ -341,7 +342,9 @@ const SkiingPage = () => {
         <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
           {filteredAreas.length > 0 ? (
             <div className="p-4 space-y-4">
-              {filteredAreas.map((area) => (
+              {filteredAreas.map((area) => {
+                const areaImageUrl = apiImageUrl(area.customer_image);
+                return (
                 <div
                   key={area.slug}
                   className={`group relative rounded-2xl border-2 overflow-hidden transition-all duration-300 cursor-pointer ${
@@ -352,8 +355,9 @@ const SkiingPage = () => {
                   onClick={() => handleAreaClick(area)}
                 >
                   <div className="relative h-44 w-full overflow-hidden">
+                    {areaImageUrl ? (
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${area.customer_image}`}
+                      src={areaImageUrl}
                       alt={area.name}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -361,6 +365,11 @@ const SkiingPage = () => {
                       loading="lazy"
                       quality={85}
                     />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-sky-100 to-blue-100 text-sky-600">
+                        <span className="text-4xl">🏔️</span>
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/10 to-transparent" />
                     <div className="absolute bottom-3 left-4 right-4 flex items-end justify-between">
                       <div>
@@ -391,7 +400,8 @@ const SkiingPage = () => {
                     </button>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center min-h-[280px] p-8 text-center">

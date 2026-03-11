@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { apiImageUrl } from "../../lib/apiImageUrl";
 import { fetchVendorDetailByName, type VendorActivity } from "./vendorDetailApi";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -131,6 +132,7 @@ export default async function VendorPage({ params }: Props) {
 
   const { customerData, activity } = data;
   const hasActivities = activity && activity.length > 0;
+  const heroImageUrl = apiImageUrl(customerData.home_image_url);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -169,10 +171,10 @@ export default async function VendorPage({ params }: Props) {
 
         {/* Hero Image with Overlay */}
         <div className="relative h-[60vh] min-h-[500px] md:h-[70vh] overflow-hidden">
-          {customerData.home_image_url ? (
+          {heroImageUrl ? (
             <>
               <Image
-                src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${customerData.home_image_url}`}
+                src={heroImageUrl}
                 alt={customerData.customer_display_name}
                 fill
                 sizes="100vw"

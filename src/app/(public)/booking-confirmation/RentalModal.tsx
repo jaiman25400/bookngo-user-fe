@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { apiImageUrl } from "../lib/apiImageUrl";
 import { fetchInventoryUsingCustomerSlug } from "../lib/bookingApi";
 import {
   FiX,
@@ -351,10 +352,10 @@ export default function RentalModal({
                     className="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition-all duration-200 bg-white"
                   >
                     <div className="flex items-start gap-4 mb-4">
-                      {item.equipment_image ? (
+                      {apiImageUrl(item.equipment_image) ? (
                         <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
                           <Image
-                            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${item.equipment_image}`}
+                            src={apiImageUrl(item.equipment_image)!}
                             alt={item.equipment_name}
                             fill
                             className="object-cover"

@@ -4,6 +4,7 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { apiImageUrl } from "../lib/apiImageUrl";
 import { fetchSkatingData, type SkatingVenue } from "./skatingApi";
 import {
   FiMapPin,
@@ -354,7 +355,7 @@ const SkatesPage = () => {
                         quality={85}
                       />
                     ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-100 text-sky-600">
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-100 text-sky-600">
                         <span className="text-5xl mb-2">⛸️</span>
                         <span className="text-sm font-medium text-slate-600">No image</span>
                       </div>

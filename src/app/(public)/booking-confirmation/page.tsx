@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { apiImageUrl } from "../lib/apiImageUrl";
 import {
   fetchActivityDetailsUsingNonOfTickets,
   fetchSlotAvailableUsingDate,
@@ -743,10 +744,10 @@ export default function BookingConfirmationPage() {
                 </button>
               </div>
               <div className="flex items-center">
-                {selectedZone.zone_thumbnail_image && (
+                {apiImageUrl(selectedZone.zone_thumbnail_image) && (
                   <div className="relative w-16 h-16 rounded-lg overflow-hidden mr-3 border border-gray-200 flex-shrink-0">
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${selectedZone.zone_thumbnail_image}`}
+                      src={apiImageUrl(selectedZone.zone_thumbnail_image)!}
                       alt={selectedZone.name}
                       fill
                       className="object-cover"

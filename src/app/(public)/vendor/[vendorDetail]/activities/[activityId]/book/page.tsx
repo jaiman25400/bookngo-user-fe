@@ -1,4 +1,5 @@
 import BookingForm from "./BookingForm";
+import { apiImageUrl } from "../../../lib/apiImageUrl";
 import { fetchVendorActivityByID } from "../vendorActivityApi";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -31,9 +32,7 @@ export default async function BookingPage({ params }: Props) {
     notFound();
   }
 
-  const imageUrl = data.activity_thumbnail_image
-    ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${data.activity_thumbnail_image}`
-    : null;
+  const imageUrl = apiImageUrl(data.activity_thumbnail_image);
 
   const useExternalBooking =
     data.redirect_to_external_website && data.external_booking_url;

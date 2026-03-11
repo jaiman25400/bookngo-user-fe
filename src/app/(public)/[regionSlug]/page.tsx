@@ -1,3 +1,4 @@
+import { apiImageUrl } from "../lib/apiImageUrl";
 import { fetchRegionResorts, type Resort } from "./regionApi";
 import { notFound } from "next/navigation";
 import RegionListing, { type RegionListingItem } from "@/components/RegionListing";
@@ -13,13 +14,12 @@ function formatRegionName(slug: string): string {
 }
 
 function mapToListingItems(resorts: Resort[]): RegionListingItem[] {
-  const base = process.env.NEXT_PUBLIC_API_BASE_URL || "";
   return resorts.map((r) => ({
     id: r.id,
     name: r.customer_display_name || "Unnamed Resort",
     slug: r.customer_slug,
     city: r.customer_city || "",
-    imageUrl: r.home_image_url ? `${base}${r.home_image_url}` : null,
+    imageUrl: apiImageUrl(r.home_image_url),
   }));
 }
 
