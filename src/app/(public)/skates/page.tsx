@@ -343,10 +343,9 @@ const SkatesPage = () => {
                   onClick={() => handleVenueClick(venue)}
                 >
                   <div className="relative h-44 w-full overflow-hidden">
-                    {venue.customer_image &&
-                    process.env.NEXT_PUBLIC_API_BASE_URL ? (
+                    {apiImageUrl(venue.customer_image) ? (
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${venue.customer_image}`}
+                        src={apiImageUrl(venue.customer_image)!}
                         alt={venue.name}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
