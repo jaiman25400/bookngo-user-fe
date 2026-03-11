@@ -9,7 +9,24 @@ type RegionCardProps = {
   slug: string;
 };
 
+const REGION_IMAGES: Record<string, string> = {
+  Ontario:
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80", // Toronto skyline / CN Tower
+  Quebec:
+    "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80", // Old Quebec in winter
+  "British-Columbia":
+    "https://images.unsplash.com/photo-1519680772-8b5d0b1f9a1a?auto=format&fit=crop&w=1600&q=80", // Mountains / Whistler-style
+  Mnitoba:
+    "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80", // Prairie winter
+  "New-Brunswick":
+    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80", // Coastal / lighthouse
+  "Nova-Scotia":
+    "https://images.unsplash.com/photo-1521185496955-15097b20c5fe?auto=format&fit=crop&w=1600&q=80", // Coastline / harbour
+};
+
 export default function RegionCard({ name, slug }: RegionCardProps) {
+  const imageSrc = REGION_IMAGES[slug] ?? "/images/home-bg.jpg";
+
   return (
     <Link
       href={`/${slug}`}
@@ -19,7 +36,7 @@ export default function RegionCard({ name, slug }: RegionCardProps) {
       {/* Background Image with Gradient Overlay */}
       <div className="absolute inset-0">
         <Image
-          src="/images/home-bg.jpg"
+          src={imageSrc}
           alt={`${name} region background`}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-500"

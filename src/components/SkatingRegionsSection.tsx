@@ -12,6 +12,21 @@ const regions = [
   { name: "Nova Scotia", slug: "Nova-Scotia" },
 ];
 
+const REGION_IMAGES: Record<string, string> = {
+  Ontario:
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80",
+  Quebec:
+    "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80",
+  "British-Columbia":
+    "https://images.unsplash.com/photo-1519680772-8b5d0b1f9a1a?auto=format&fit=crop&w=1600&q=80",
+  Mnitoba:
+    "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80",
+  "New-Brunswick":
+    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
+  "Nova-Scotia":
+    "https://images.unsplash.com/photo-1521185496955-15097b20c5fe?auto=format&fit=crop&w=1600&q=80",
+};
+
 export default function SkatingRegionsSection() {
   return (
     <section className="py-12 md:py-16 bg-white border-t border-slate-200">
@@ -37,7 +52,7 @@ export default function SkatingRegionsSection() {
                 >
                   <div className="absolute inset-0">
                     <Image
-                      src="/images/home-bg.jpg"
+                      src={REGION_IMAGES[region.slug] ?? "/images/home-bg.jpg"}
                       alt={`${region.name} region`}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
