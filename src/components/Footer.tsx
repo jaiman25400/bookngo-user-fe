@@ -29,7 +29,7 @@ export default function Footer() {
             </Link>
             <p className="text-sm leading-relaxed mb-6 text-gray-400">
               Discover and book the best winter activities across Canada. Your
-              gateway to unforgettable ski resorts, skating rinks, and winter
+              gateway to unforgettable ski resorts, skating rings, and winter
               adventures.
             </p>
             {/* Social Media Links */}

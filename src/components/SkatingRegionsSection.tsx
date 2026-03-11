@@ -20,7 +20,7 @@ export default function SkatingRegionsSection() {
           Find ice skating by region
         </h2>
         <p className="text-slate-600 text-base mb-8">
-          Browse skating rinks in your province
+          Browse skating rings in your province
         </p>
 
         <div className="relative">
@@ -33,7 +33,7 @@ export default function SkatingRegionsSection() {
                 <Link
                   href={`/skates/${region.slug}`}
                   className="group block relative aspect-[4.5/3] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
-                  aria-label={`View ice skating rinks in ${region.name}`}
+                  aria-label={`View skating rings in ${region.name}`}
                 >
                   <div className="absolute inset-0">
                     <Image

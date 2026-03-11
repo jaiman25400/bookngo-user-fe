@@ -49,9 +49,9 @@ export default async function SkatingRegionPage({ params }: Props) {
       regionName={regionName}
       activityLabel="Ice Skating"
       itemLabel="venue"
-      itemLabelPlural="rinks"
+      itemLabelPlural="rings"
       basePath="/skates"
-      emptyMessage="Try adjusting your search or filters to find rinks in this region."
+      emptyMessage="Try adjusting your search or filters to find skating rings in this region."
     />
   );
 }

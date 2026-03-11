@@ -9,17 +9,17 @@ export default function SkatingRegionNotFound() {
           <FiAlertCircle className="w-8 h-8" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">
-          No ice skating rinks in this region
+          No skating rings in this region
         </h1>
         <p className="text-gray-600 mb-8">
-          We couldn&apos;t find any skating venues here. Try another region or browse all rinks.
+          We couldn&apos;t find any skating venues here. Try another region or browse all skating rings.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/skates"
             className="inline-flex items-center justify-center px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl transition-colors"
           >
-            All skating rinks
+            All skating rings
           </Link>
           <Link
             href="/"

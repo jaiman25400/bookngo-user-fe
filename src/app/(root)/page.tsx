@@ -43,9 +43,9 @@ export default function HomePage() {
               <Link
                 href="/skates"
                 className="group inline-flex items-center justify-center bg-gray-900/90 hover:bg-gray-900 text-white border border-white/30 px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-base sm:text-lg font-semibold transition-all duration-300"
-                aria-label="Browse ski rinks and ice skating"
+                aria-label="Browse skating rings and ice skating"
               >
-                Browse ski rinks
+                Browse skating rings
                 <FiArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -79,7 +79,7 @@ export default function HomePage() {
             Stay in the loop
           </h2>
           <p className="text-slate-300 text-base md:text-lg mb-8">
-            Get updates on new resorts, rinks, and seasonal offers.
+            Get updates on new resorts, skating rings, and seasonal offers.
           </p>
           <NewsletterForm />
         </div>

@@ -47,14 +47,14 @@ export default function AboutPage() {
     {
       title: "Ice Skating",
       description:
-        "Skating rinks and outdoor ice experiences across Canada. From community rinks to scenic frozen trails and lake skating, find your glide year-round.",
+        "Skating rings and outdoor ice experiences across Canada. From community skating rings to scenic frozen trails and lake skating, find your glide year-round.",
       image: IMG.skating,
     },
   ];
 
   const values = [
     { icon: FiZap, title: "Easy booking", description: "Simple, clear booking so you spend less time planning and more time on the snow and ice." },
-    { icon: FiShield, title: "Trusted partners", description: "We work with verified resorts, rinks, and parks so you can book with confidence." },
+    { icon: FiShield, title: "Trusted partners", description: "We work with verified resorts, skating rings, and parks so you can book with confidence." },
     { icon: FiMapPin, title: "Canadian focus", description: "We are focused on winter experiences across Canada — from coast to coast." },
     { icon: FiHeart, title: "Real support", description: "Need help? Our team is here for questions about your booking or your next adventure." },
   ];
@@ -102,7 +102,7 @@ export default function AboutPage() {
               focused on what matters: skiing, snowboarding, tubing, and ice skating.
             </p>
             <p className="text-slate-600 text-lg leading-relaxed">
-              We partner with resorts, rinks, and winter parks across Canada to give
+              We partner with resorts, skating rings, and winter parks across Canada to give
               you a clear view of what&apos;s available, when, and how to book. Our
               goal is simple: make it easy to get outside and enjoy winter.
             </p>
@@ -228,7 +228,7 @@ export default function AboutPage() {
             Ready to get started?
           </h2>
           <p className="text-slate-600 mb-8">
-            Explore ski slopes and skating rinks near you.
+            Explore ski slopes and skating rings near you.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
@@ -242,7 +242,7 @@ export default function AboutPage() {
               href="/skates"
               className="inline-flex items-center bg-slate-200 hover:bg-slate-300 text-slate-800 px-6 py-3 rounded-xl font-semibold transition-colors"
             >
-              Skating Rinks
+              Skating Rings
               <FiArrowRight className="ml-2 w-4 h-4" />
             </Link>
             <Link
