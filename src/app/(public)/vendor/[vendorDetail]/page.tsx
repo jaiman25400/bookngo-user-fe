@@ -132,6 +132,15 @@ export default async function VendorPage({ params }: Props) {
 
   const { customerData, activity } = data;
   const hasActivities = activity && activity.length > 0;
+
+  const isSkatingVendor =
+    hasActivities &&
+    activity.some((a) =>
+      a.activity_name?.toLowerCase().includes("skate")
+    );
+
+  const parentHref = isSkatingVendor ? "/skates" : "/skiing";
+  const parentLabel = isSkatingVendor ? "Skating Rings" : "Resorts";
   const heroImageUrl = apiImageUrl(customerData.home_image_url);
 
   return (
@@ -154,10 +163,10 @@ export default async function VendorPage({ params }: Props) {
                 <li className="text-white/70">/</li>
                 <li>
                   <Link
-                    href="/skiing"
+                    href={parentHref}
                     className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-lg"
                   >
-                    Resorts
+                    {parentLabel}
                   </Link>
                 </li>
                 <li className="text-white/70">/</li>
