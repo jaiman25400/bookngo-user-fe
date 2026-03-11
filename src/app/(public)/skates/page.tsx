@@ -161,9 +161,16 @@ const SkatesPage = () => {
     });
     geolocate.on("geolocate", (e: GeolocationPosition) => {
       const { longitude, latitude } = e.coords;
-      setTimeout(() => flyToUserLocation(longitude, latitude), 100);
+      setTimeout(() => flyToUserLocation(longitude, latitude), 150);
     });
     map.current.addControl(geolocate, "top-right");
+
+    // Automatically request and fly to user location shortly after load
+    setTimeout(() => {
+      if (geolocate && typeof window !== "undefined") {
+        geolocate.trigger();
+      }
+    }, 800);
 
     const updateTooltipPosition = () => {
       if (hoveredVenueRef.current && map.current) {
@@ -366,6 +373,20 @@ const SkatesPage = () => {
           </div>
         </div>
 
+        {/* Mobile map container directly under toggle */}
+        <div
+          className={`mt-4 px-4 lg:hidden ${
+            mobileView === "map" ? "block" : "hidden"
+          }`}
+        >
+          <div className="rounded-2xl overflow-hidden border border-sky-200 shadow-md bg-slate-100">
+            <div
+              ref={mapContainer}
+              className="w-full h-64 bg-slate-200"
+            />
+          </div>
+        </div>
+
         <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
           {filteredVenues.length > 0 ? (
             <div className="p-4 space-y-4">
@@ -446,15 +467,11 @@ const SkatesPage = () => {
         </div>
       </div>
 
-      {/* Map Panel */}
-      <div
-        className={`flex-1 relative ${
-          mobileView === "map" ? "block" : "hidden lg:block"
-        } lg:block`}
-      >
+      {/* Desktop Map Panel */}
+      <div className="hidden lg:block flex-1 relative">
         <div
           ref={mapContainer}
-          className="w-full h-72 lg:h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner bg-slate-200"
+          className="w-full h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner bg-slate-200"
         />
         {process.env.NEXT_PUBLIC_MAPBOX_TOKEN && mapLoaded && (
           <div className="absolute inset-0 pointer-events-none rounded-none lg:rounded-l-2xl">
