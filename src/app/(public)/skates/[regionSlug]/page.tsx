@@ -13,6 +13,21 @@ function formatRegionName(slug: string): string {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+const REGION_HERO_IMAGES: Record<string, string> = {
+  Ontario:
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80",
+  Quebec:
+    "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80",
+  "British-Columbia":
+    "https://images.unsplash.com/photo-1508261306211-45a1c5c2a5c5?auto=format&fit=crop&w=1600&q=80",
+  Mnitoba:
+    "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80",
+  "New-Brunswick":
+    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
+  "Nova-Scotia":
+    "https://images.unsplash.com/photo-1521185496955-15097b20c5fe?auto=format&fit=crop&w=1600&q=80",
+};
+
 function mapToListingItems(venues: SkatingRegionVenue[]): RegionListingItem[] {
   return venues.map((v) => ({
     id: v.id,
@@ -42,6 +57,7 @@ export default async function SkatingRegionPage({ params }: Props) {
   }
 
   const items = mapToListingItems(data.results);
+  const heroImageUrl = REGION_HERO_IMAGES[regionSlug] ?? null;
 
   return (
     <RegionListing
@@ -52,6 +68,7 @@ export default async function SkatingRegionPage({ params }: Props) {
       itemLabelPlural="rings"
       basePath="/skates"
       emptyMessage="Try adjusting your search or filters to find skating rings in this region."
+      heroImageUrl={heroImageUrl}
     />
   );
 }

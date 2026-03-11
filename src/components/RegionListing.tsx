@@ -23,6 +23,7 @@ interface RegionListingProps {
   itemLabelPlural: string;
   basePath: string;
   emptyMessage?: string;
+  heroImageUrl?: string | null;
 }
 
 function VenueCard({
@@ -87,6 +88,7 @@ export default function RegionListing({
   itemLabelPlural,
   basePath,
   emptyMessage = "No results match your filters.",
+  heroImageUrl,
 }: RegionListingProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("name-asc");
@@ -131,8 +133,20 @@ export default function RegionListing({
   return (
     <div className="min-h-screen bg-white pt-16">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <div className="relative text-white">
+        {heroImageUrl && (
+          <div className="absolute inset-0">
+            <Image
+              src={heroImageUrl}
+              alt={`${regionName} background`}
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/60 to-black/80" />
+          </div>
+        )}
+        <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 ${heroImageUrl ? "" : "bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800"}`}>
           <nav className="flex items-center mb-6 text-sm">
             <Link href="/" className="text-slate-300 hover:text-white transition-colors">
               Home
