@@ -1,5 +1,5 @@
 import BookingForm from "./BookingForm";
-import { apiImageUrl } from "../../../lib/apiImageUrl";
+import { apiImageUrl } from "../../../../../lib/apiImageUrl";
 import { fetchVendorActivityByID } from "../vendorActivityApi";
 import { notFound } from "next/navigation";
 import Link from "next/link";
