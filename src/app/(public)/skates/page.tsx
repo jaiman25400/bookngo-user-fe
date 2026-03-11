@@ -298,11 +298,7 @@ const SkatesPage = () => {
   return (
     <div className="flex h-screen bg-slate-50 flex-col lg:flex-row overflow-hidden">
       {/* Left Panel */}
-      <div
-        className={`w-full lg:w-[480px] xl:w-[540px] h-full flex-col bg-white border-r border-slate-200 shadow-xl flex-shrink-0 ${
-          mobileView === "map" ? "hidden lg:flex" : "flex"
-        }`}
-      >
+      <div className="w-full lg:w-[480px] xl:w-[540px] h-full flex flex-col bg-white border-r border-slate-200 shadow-xl flex-shrink-0">
         <div className="p-6 pb-5 border-b border-slate-100 bg-gradient-to-br from-sky-500 to-blue-600">
           <div className="flex items-center gap-3 mb-1">
             <span className="text-sky-100 font-semibold text-sm uppercase tracking-wider">Ice Skating</span>
@@ -454,7 +450,7 @@ const SkatesPage = () => {
       <div
         className={`flex-1 relative ${
           mobileView === "map" ? "block" : "hidden lg:block"
-        }`}
+        } lg:block`}
       >
         <div
           ref={mapContainer}
