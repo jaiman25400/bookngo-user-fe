@@ -231,6 +231,15 @@ const SkatesPage = () => {
     };
   }, [venues, router]);
 
+  // When switching to map view on mobile, resize the map so it fills the now-visible container
+  useEffect(() => {
+    if (mobileView !== "map" || !map.current) return;
+    const t = setTimeout(() => {
+      map.current?.resize();
+    }, 100);
+    return () => clearTimeout(t);
+  }, [mobileView]);
+
   const handleVenueClick = useCallback((venue: SkatingVenue) => {
     // On mobile: behave like "View venue" and navigate directly
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
@@ -304,8 +313,10 @@ const SkatesPage = () => {
 
   return (
     <div className="flex min-h-screen lg:h-screen bg-slate-50 flex-col lg:flex-row lg:overflow-hidden">
-      {/* Left Panel */}
-      <div className="w-full lg:w-[480px] xl:w-[540px] h-full flex flex-col bg-white border-r border-slate-200 shadow-xl flex-shrink-0">
+      {/* Left column: header + list (wrapper uses contents on mobile so map can sit between them via order) */}
+      <div className="contents lg:flex lg:flex-col lg:w-[480px] xl:w-[540px] lg:h-full lg:flex-shrink-0 lg:bg-white lg:border-r lg:border-slate-200 lg:shadow-xl">
+        {/* Header + search + toggle */}
+        <div className="order-1 lg:order-1 w-full bg-white border-r border-slate-200 shadow-xl lg:shadow-none flex flex-col flex-shrink-0">
         <div className="p-6 pb-5 border-b border-slate-100 bg-gradient-to-br from-sky-500 to-blue-600">
           <div className="flex items-center gap-3 mb-1">
             <span className="text-sky-100 font-semibold text-sm uppercase tracking-wider">Ice Skating</span>
@@ -372,22 +383,9 @@ const SkatesPage = () => {
             </div>
           </div>
         </div>
-
-        {/* Mobile map container directly under toggle */}
-        <div
-          className={`mt-4 px-4 lg:hidden ${
-            mobileView === "map" ? "block" : "hidden"
-          }`}
-        >
-          <div className="rounded-2xl overflow-hidden border border-sky-200 shadow-md bg-slate-100">
-            <div
-              ref={mapContainer}
-              className="w-full h-64 bg-slate-200"
-            />
-          </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+        <div className="order-3 lg:order-2 flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-white min-h-0">
           {filteredVenues.length > 0 ? (
             <div className="p-4 space-y-4">
               {filteredVenues.map((venue) => (
@@ -467,12 +465,17 @@ const SkatesPage = () => {
         </div>
       </div>
 
-      {/* Desktop Map Panel */}
-      <div className="hidden lg:block flex-1 relative">
-        <div
-          ref={mapContainer}
-          className="w-full h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner bg-slate-200"
-        />
+      {/* Single map container: order-2 so on mobile it sits between header (1) and list (3); on desktop it's the right column */}
+      <div
+        className={`order-2 min-h-[280px] px-4 py-4 lg:px-0 lg:py-0 lg:min-h-0 lg:flex-1 lg:relative ${
+          mobileView === "map" ? "block" : "hidden lg:!block"
+        }`}
+      >
+        <div className="h-full min-h-[256px] lg:min-h-0 rounded-2xl overflow-hidden border border-sky-200 shadow-md bg-slate-100 lg:rounded-none lg:border-0 lg:border-l-4 lg:shadow-inner relative">
+          <div
+            ref={mapContainer}
+            className="w-full h-full min-h-[256px] lg:min-h-0 bg-slate-200"
+          />
         {process.env.NEXT_PUBLIC_MAPBOX_TOKEN && mapLoaded && (
           <div className="absolute inset-0 pointer-events-none rounded-none lg:rounded-l-2xl">
             {hoveredVenue && tooltipPosition && (
@@ -511,6 +514,7 @@ const SkatesPage = () => {
             </div>
           </div>
         )}
+        </div>
       </div>
 
       <style jsx global>{`
