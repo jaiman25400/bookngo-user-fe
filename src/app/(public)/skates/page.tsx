@@ -35,6 +35,7 @@ const SkatesPage = () => {
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
   const hoveredVenueRef = useRef<SkatingVenue | null>(null);
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
+  const initialFlyToUserDone = useRef(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -160,12 +161,17 @@ const SkatesPage = () => {
       fitBoundsOptions: { maxZoom: 8 },
     });
     geolocate.on("geolocate", (e: GeolocationPosition) => {
+      // Only fly to user location once (on initial load). Do not fly on every
+      // position update or when user clicks "find my location" again, so the
+      // map does not jump back after the user has zoomed/panned elsewhere.
+      if (initialFlyToUserDone.current) return;
+      initialFlyToUserDone.current = true;
       const { longitude, latitude } = e.coords;
       setTimeout(() => flyToUserLocation(longitude, latitude), 150);
     });
     map.current.addControl(geolocate, "top-right");
 
-    // Automatically request and fly to user location shortly after load
+    // Automatically request and fly to user location once shortly after load
     setTimeout(() => {
       if (geolocate && typeof window !== "undefined") {
         geolocate.trigger();
@@ -227,6 +233,7 @@ const SkatesPage = () => {
       markersRef.current = [];
       map.current?.remove();
       map.current = null;
+      initialFlyToUserDone.current = false;
       setMapLoaded(false);
     };
   }, [venues, router]);

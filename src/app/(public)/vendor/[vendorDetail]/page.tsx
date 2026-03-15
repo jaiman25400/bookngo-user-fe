@@ -134,10 +134,11 @@ export default async function VendorPage({ params }: Props) {
   const hasActivities = activity && activity.length > 0;
 
   const isSkatingVendor =
-    hasActivities &&
-    activity.some((a) =>
-      a.activity_name?.toLowerCase().includes("skate")
-    );
+    vendorDetail.toLowerCase().includes("skate") ||
+    (hasActivities &&
+      activity.some((a) =>
+        a.activity_name?.toLowerCase().includes("skate")
+      ));
 
   const parentHref = isSkatingVendor ? "/skates" : "/skiing";
   const parentLabel = isSkatingVendor ? "Skating Rings" : "Resorts";
