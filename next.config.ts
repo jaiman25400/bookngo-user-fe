@@ -21,6 +21,16 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "bookngo-backend.vercel.app",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "bookngo-backend-2u02cr7zi-jaiman25400s-projects.vercel.app",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
