@@ -148,31 +148,33 @@ export default async function VendorPage({ params }: Props) {
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section with Overlay */}
       <div className="relative">
-        {/* Breadcrumb - Absolute positioned */}
-        <div className="absolute top-4 left-0 right-0 z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb - Absolute positioned, mobile-friendly */}
+        <div className="absolute top-3 left-0 right-0 z-10 sm:top-4">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <nav aria-label="Breadcrumb">
-              <ol className="flex items-center space-x-2 text-sm">
-                <li>
+              <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1.5 text-xs sm:text-sm">
+                <li className="flex items-center gap-x-1.5 shrink-0">
                   <Link
                     href="/"
-                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-lg"
+                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/20 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg whitespace-nowrap"
                   >
                     Home
                   </Link>
+                  <span className="text-white/50 select-none" aria-hidden="true">/</span>
                 </li>
-                <li className="text-white/70">/</li>
-                <li>
+                <li className="flex items-center gap-x-1.5 min-w-0">
                   <Link
                     href={parentHref}
-                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-lg"
+                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/20 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg whitespace-nowrap"
                   >
                     {parentLabel}
                   </Link>
+                  <span className="text-white/50 select-none shrink-0" aria-hidden="true">/</span>
                 </li>
-                <li className="text-white/70">/</li>
-                <li className="text-white font-medium backdrop-blur-sm bg-black/20 px-3 py-1.5 rounded-lg" aria-current="page">
-                  {customerData.customer_display_name}
+                <li className="min-w-0 max-w-full" aria-current="page">
+                  <span className="block text-white font-medium backdrop-blur-sm bg-black/20 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg truncate">
+                    {customerData.customer_display_name}
+                  </span>
                 </li>
               </ol>
             </nav>
