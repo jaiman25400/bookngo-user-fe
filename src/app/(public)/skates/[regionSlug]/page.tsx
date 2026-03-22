@@ -19,7 +19,7 @@ const REGION_HERO_IMAGES: Record<string, string> = {
   Quebec:
     "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80",
   "British-Columbia":
-    "https://images.wallpapersden.com/image/download/canada-british-columbia-mountain_ZmpubGiUmZqaraWkpJRnZWltrWZoa2w.jpg",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
   Mnitoba:
     "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80",
   "New-Brunswick":

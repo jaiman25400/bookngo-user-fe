@@ -16,8 +16,9 @@ const REGION_IMAGES: Record<string, string> = {
     "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80", // Toronto skyline / CN Tower
   Quebec:
     "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80", // Old Quebec in winter
+  // WallpapersDen blocks server/CDN requests (403); Unsplash works with next/image
   "British-Columbia":
-    "https://images.wallpapersden.com/image/download/canada-british-columbia-mountain_ZmpubGiUmZqaraWkpJRnZWltrWZoa2w.jpg",
+    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
   Mnitoba:
     "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80", // Prairie winter
   "New-Brunswick":
