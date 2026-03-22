@@ -17,7 +17,7 @@ const REGION_IMAGES: Record<string, string> = {
   Quebec:
     "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80", // Old Quebec in winter
   "British-Columbia":
-    "https://images.unsplash.com/photo-1508261306211-45a1c5c2a5c5?auto=format&fit=crop&w=1600&q=80", // Mountains / Whistler-style
+    "https://images.wallpapersden.com/image/download/canada-british-columbia-mountain_ZmpubGiUmZqaraWkpJRnZWltrWZoa2w.jpg",
   Mnitoba:
     "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80", // Prairie winter
   "New-Brunswick":
