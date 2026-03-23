@@ -5,6 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiImageUrl } from "../lib/apiImageUrl";
+import { vendorPath } from "../lib/listingContext";
 import { fetchSkiingData, type SkiArea } from "./skiingApi";
 import {
   FiMapPin,
@@ -208,7 +209,7 @@ const SkiingPage = () => {
       pin.addEventListener("click", (e) => {
         e.stopPropagation();
         e.preventDefault();
-        router.push(`/vendor/${area.slug}`);
+        router.push(vendorPath(area.slug, "skiing"));
       });
 
       const marker = new mapboxgl.Marker({ element: pin, anchor: "center" })
@@ -260,7 +261,7 @@ const SkiingPage = () => {
 
   const handleViewResort = useCallback(
     (area: SkiArea) => {
-      router.push(`/vendor/${area.slug}`);
+      router.push(vendorPath(area.slug, "skiing"));
     },
     [router]
   );

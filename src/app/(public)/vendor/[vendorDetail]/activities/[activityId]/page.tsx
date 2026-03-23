@@ -1,3 +1,10 @@
+import { headers } from "next/headers";
+import {
+  bookingPath,
+  listingParent,
+  resolveListingFrom,
+  vendorPath,
+} from "../../../../lib/listingContext";
 import { fetchVendorActivityByID } from "./vendorActivityApi";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -21,9 +28,10 @@ type Props = {
     vendorDetail: string;
     activityId: string;
   }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export default async function ActivityPage({ params }: Props) {
+export default async function ActivityPage({ params, searchParams }: Props) {
   let vendorDetail: string;
   let activityId: string;
 
@@ -35,6 +43,16 @@ export default async function ActivityPage({ params }: Props) {
     console.error("Error resolving params:", error);
     notFound();
   }
+
+  const [resolvedSearch, headersList] = await Promise.all([
+    searchParams,
+    headers(),
+  ]);
+  const listingFrom = resolveListingFrom(
+    resolvedSearch.from,
+    headersList.get("referer")
+  );
+  const { href: listHref, label: listLabel } = listingParent(listingFrom);
 
   const { data, error } = await fetchVendorActivityByID(activityId);
 
@@ -58,30 +76,38 @@ export default async function ActivityPage({ params }: Props) {
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex items-center space-x-2 text-sm" aria-label="Breadcrumb">
-            <Link
-              href="/"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Home
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link
-              href="/skiing"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Resorts
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link
-              href={`/vendor/${vendorDetail}`}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {vendorDetail.replace(/-/g, " ")}
-            </Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-900 font-medium">Activity</span>
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex flex-nowrap items-center gap-x-1 text-[11px] sm:text-sm max-w-full overflow-x-auto overflow-y-hidden pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <li className="flex items-center gap-x-1 shrink-0">
+                <Link href="/" className="text-gray-600 hover:text-gray-900 whitespace-nowrap">
+                  Home
+                </Link>
+                <span className="text-gray-400 shrink-0">/</span>
+              </li>
+              <li className="flex items-center gap-x-1 shrink-0">
+                <Link
+                  href={listHref}
+                  className="text-gray-600 hover:text-gray-900 max-w-[40vw] truncate sm:max-w-none sm:whitespace-normal sm:overflow-visible sm:text-clip"
+                  title={listLabel}
+                >
+                  {listLabel}
+                </Link>
+                <span className="text-gray-400 shrink-0">/</span>
+              </li>
+              <li className="flex items-center gap-x-1 min-w-0 shrink">
+                <Link
+                  href={vendorPath(vendorDetail, listingFrom)}
+                  className="text-gray-600 hover:text-gray-900 truncate max-w-[32vw] sm:max-w-[12rem]"
+                >
+                  {vendorDetail.replace(/-/g, " ")}
+                </Link>
+                <span className="text-gray-400 shrink-0">/</span>
+              </li>
+              <li className="text-gray-900 font-medium shrink-0 whitespace-nowrap">
+                Activity
+              </li>
+            </ol>
           </nav>
         </div>
       </div>
@@ -89,7 +115,7 @@ export default async function ActivityPage({ params }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Back Button */}
         <Link
-          href={`/vendor/${vendorDetail}`}
+          href={vendorPath(vendorDetail, listingFrom)}
           className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6 transition-colors"
         >
           <FiArrowLeft className="w-5 h-5 mr-2" />
@@ -249,7 +275,7 @@ export default async function ActivityPage({ params }: Props) {
                   </>
                 ) : (
                   <Link
-                    href={`/vendor/${vendorDetail}/activities/${activityId}/book`}
+                    href={bookingPath(vendorDetail, activityId, listingFrom)}
                     className="block w-full"
                   >
                     <button className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center">

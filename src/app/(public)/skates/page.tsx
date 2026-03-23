@@ -5,6 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { apiImageUrl } from "../lib/apiImageUrl";
+import { vendorPath } from "../lib/listingContext";
 import { fetchSkatingData, type SkatingVenue } from "./skatingApi";
 import {
   FiMapPin,
@@ -215,7 +216,7 @@ const SkatesPage = () => {
       pin.addEventListener("click", (e) => {
         e.stopPropagation();
         e.preventDefault();
-        router.push(`/vendor/${venue.slug}`);
+        router.push(vendorPath(venue.slug, "skates"));
       });
 
       const marker = new mapboxgl.Marker({ element: pin, anchor: "center" })
@@ -250,7 +251,7 @@ const SkatesPage = () => {
   const handleVenueClick = useCallback((venue: SkatingVenue) => {
     // On mobile: behave like "View venue" and navigate directly
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
-      router.push(`/vendor/${venue.slug}`);
+      router.push(vendorPath(venue.slug, "skates"));
       return;
     }
 
@@ -277,7 +278,7 @@ const SkatesPage = () => {
 
   const handleViewVenue = useCallback(
     (venue: SkatingVenue) => {
-      router.push(`/vendor/${venue.slug}`);
+      router.push(vendorPath(venue.slug, "skates"));
     },
     [router]
   );

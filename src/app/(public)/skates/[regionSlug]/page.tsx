@@ -67,6 +67,7 @@ export default async function SkatingRegionPage({ params }: Props) {
       itemLabel="venue"
       itemLabelPlural="rings"
       basePath="/skates"
+      listingFrom="skates"
       emptyMessage="Try adjusting your search or filters to find skating rings in this region."
       heroImageUrl={heroImageUrl}
     />

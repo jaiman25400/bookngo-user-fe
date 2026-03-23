@@ -1,5 +1,12 @@
 import Image from "next/image";
+import { headers } from "next/headers";
 import { apiImageUrl } from "../../lib/apiImageUrl";
+import {
+  activityPath,
+  listingParent,
+  resolveListingFrom,
+  type ListingFrom,
+} from "../../lib/listingContext";
 import { fetchVendorDetailByName, type VendorActivity } from "./vendorDetailApi";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -16,20 +23,23 @@ type Props = {
   params: Promise<{
     vendorDetail: string;
   }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 function ActivityCard({
   activity,
   vendorSlug,
+  listingFrom,
 }: {
   activity: VendorActivity;
   vendorSlug: string;
+  listingFrom: ListingFrom;
 }) {
   const imageUrl = apiImageUrl(activity.activity_thumbnail_image);
 
   return (
     <Link
-      href={`/vendor/${vendorSlug}/activities/${activity.id}`}
+      href={activityPath(vendorSlug, activity.id, listingFrom)}
       className="group block h-full"
       aria-label={`View ${activity.activity_name} activity`}
     >
@@ -110,7 +120,7 @@ function ActivityCard({
   );
 }
 
-export default async function VendorPage({ params }: Props) {
+export default async function VendorPage({ params, searchParams }: Props) {
   let vendorDetail: string;
 
   try {
@@ -120,6 +130,14 @@ export default async function VendorPage({ params }: Props) {
     console.error("Error resolving params:", error);
     notFound();
   }
+
+  const [resolvedSearch, headersList] = await Promise.all([
+    searchParams,
+    headers(),
+  ]);
+  const referer = headersList.get("referer");
+  const listingFrom = resolveListingFrom(resolvedSearch.from, referer);
+  const { href: parentHref, label: parentLabel } = listingParent(listingFrom);
 
   const { data, error } = await fetchVendorDetailByName(vendorDetail);
 
@@ -131,18 +149,6 @@ export default async function VendorPage({ params }: Props) {
   const { customerData, activity } = data;
   const hasActivities = activity && activity.length > 0;
 
-  const slug = (vendorDetail || "").toLowerCase();
-  const displayName = (customerData?.customer_display_name || "").toLowerCase();
-  const isSkatingVendor =
-    slug.includes("skate") ||
-    displayName.includes("skate") ||
-    (hasActivities &&
-      activity.some((a) =>
-        (a.activity_name || "").toLowerCase().includes("skate")
-      ));
-
-  const parentHref = isSkatingVendor ? "/skates" : "/skiing";
-  const parentLabel = isSkatingVendor ? "Skating Rings" : "Resorts";
   const heroImageUrl = apiImageUrl(customerData.home_image_url);
 
   return (
@@ -150,30 +156,36 @@ export default async function VendorPage({ params }: Props) {
       {/* Hero Section with Overlay */}
       <div className="relative">
         {/* Breadcrumb - Absolute positioned, mobile-friendly */}
-        <div className="absolute top-3 left-0 right-0 z-10 sm:top-4">
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="absolute top-2 left-0 right-0 z-10 sm:top-4">
+          <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <nav aria-label="Breadcrumb">
-              <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1.5 text-xs sm:text-sm">
-                <li className="flex items-center gap-x-1.5 shrink-0">
+              {/* Single-row scroll on mobile avoids awkward wraps; full labels on larger screens */}
+              <ol className="flex flex-nowrap items-center gap-x-1 sm:gap-x-1.5 text-[11px] leading-tight sm:text-sm sm:leading-normal max-w-full overflow-x-auto overflow-y-hidden pb-1 sm:pb-0 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <li className="flex items-center gap-x-1 sm:gap-x-1.5 shrink-0">
                   <Link
                     href="/"
-                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/20 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg whitespace-nowrap"
+                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/25 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg whitespace-nowrap"
                   >
                     Home
                   </Link>
-                  <span className="text-white/50 select-none" aria-hidden="true">/</span>
+                  <span className="text-white/50 select-none shrink-0" aria-hidden="true">
+                    /
+                  </span>
                 </li>
-                <li className="flex items-center gap-x-1.5 min-w-0">
+                <li className="flex items-center gap-x-1 sm:gap-x-1.5 shrink-0">
                   <Link
                     href={parentHref}
-                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/20 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg whitespace-nowrap"
+                    className="text-white/90 hover:text-white transition-colors backdrop-blur-sm bg-black/25 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg max-w-[42vw] truncate sm:max-w-none sm:overflow-visible sm:whitespace-normal sm:text-clip"
+                    title={parentLabel}
                   >
                     {parentLabel}
                   </Link>
-                  <span className="text-white/50 select-none shrink-0" aria-hidden="true">/</span>
+                  <span className="text-white/50 select-none shrink-0" aria-hidden="true">
+                    /
+                  </span>
                 </li>
-                <li className="min-w-0 max-w-full" aria-current="page">
-                  <span className="block text-white font-medium backdrop-blur-sm bg-black/20 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg truncate">
+                <li className="min-w-0 shrink" aria-current="page">
+                  <span className="block text-white font-medium backdrop-blur-sm bg-black/25 px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg truncate max-w-[min(100%,38vw)] sm:max-w-[min(100%,28rem)]">
                     {customerData.customer_display_name}
                   </span>
                 </li>
@@ -265,6 +277,7 @@ export default async function VendorPage({ params }: Props) {
                   key={activityItem.id}
                   activity={activityItem}
                   vendorSlug={vendorDetail}
+                  listingFrom={listingFrom}
                 />
               ))}
             </div>
@@ -278,13 +291,15 @@ export default async function VendorPage({ params }: Props) {
               </h3>
               <p className="text-gray-600 max-w-md mx-auto">
                 We&apos;re currently updating our activity offerings. Please check
-                back soon or explore other resorts.
+                back soon or explore other {listingFrom === "skates" ? "rings" : "resorts"}.
               </p>
               <Link
-                href="/skiing"
+                href={parentHref}
                 className="inline-flex items-center mt-6 px-6 py-3 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 transition-colors"
               >
-                Browse Other Resorts
+                {listingFrom === "skates"
+                  ? "Browse skating rings"
+                  : "Browse ski slopes"}
                 <FiArrowRight className="ml-2 w-5 h-5" />
               </Link>
             </div>

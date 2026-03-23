@@ -1,5 +1,12 @@
 import BookingForm from "./BookingForm";
+import { headers } from "next/headers";
 import { apiImageUrl } from "../../../../../lib/apiImageUrl";
+import {
+  activityPath,
+  listingParent,
+  resolveListingFrom,
+  vendorPath,
+} from "../../../../../lib/listingContext";
 import { fetchVendorActivityByID } from "../vendorActivityApi";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -11,9 +18,10 @@ type Props = {
     vendorDetail: string;
     activityId: string;
   }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-export default async function BookingPage({ params }: Props) {
+export default async function BookingPage({ params, searchParams }: Props) {
   let vendorDetail: string;
   let activityId: string;
 
@@ -25,6 +33,16 @@ export default async function BookingPage({ params }: Props) {
     console.error("Error resolving params:", error);
     notFound();
   }
+
+  const [resolvedSearch, headersList] = await Promise.all([
+    searchParams,
+    headers(),
+  ]);
+  const listingFrom = resolveListingFrom(
+    resolvedSearch.from,
+    headersList.get("referer")
+  );
+  const { href: listHref, label: listLabel } = listingParent(listingFrom);
 
   const { data, error } = await fetchVendorActivityByID(activityId);
   
@@ -41,37 +59,47 @@ export default async function BookingPage({ params }: Props) {
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex items-center space-x-2 text-sm" aria-label="Breadcrumb">
-            <Link
-              href="/"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Home
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link
-              href="/skiing"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Resorts
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link
-              href={`/vendor/${vendorDetail}`}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              {vendorDetail.replace(/-/g, " ")}
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link
-              href={`/vendor/${vendorDetail}/activities/${activityId}`}
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Activity
-            </Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-900 font-medium">Booking</span>
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex flex-nowrap items-center gap-x-1 text-[11px] sm:text-sm max-w-full overflow-x-auto overflow-y-hidden pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <li className="flex items-center gap-x-1 shrink-0">
+                <Link href="/" className="text-gray-600 hover:text-gray-900 whitespace-nowrap">
+                  Home
+                </Link>
+                <span className="text-gray-400 shrink-0">/</span>
+              </li>
+              <li className="flex items-center gap-x-1 shrink-0">
+                <Link
+                  href={listHref}
+                  className="text-gray-600 hover:text-gray-900 max-w-[38vw] truncate sm:max-w-none sm:whitespace-normal sm:overflow-visible sm:text-clip"
+                  title={listLabel}
+                >
+                  {listLabel}
+                </Link>
+                <span className="text-gray-400 shrink-0">/</span>
+              </li>
+              <li className="flex items-center gap-x-1 min-w-0 shrink">
+                <Link
+                  href={vendorPath(vendorDetail, listingFrom)}
+                  className="text-gray-600 hover:text-gray-900 truncate max-w-[28vw] sm:max-w-[10rem]"
+                >
+                  {vendorDetail.replace(/-/g, " ")}
+                </Link>
+                <span className="text-gray-400 shrink-0">/</span>
+              </li>
+              <li className="flex items-center gap-x-1 shrink-0 min-w-0">
+                <Link
+                  href={activityPath(vendorDetail, activityId, listingFrom)}
+                  className="text-gray-600 hover:text-gray-900 whitespace-nowrap"
+                >
+                  Activity
+                </Link>
+                <span className="text-gray-400 shrink-0">/</span>
+              </li>
+              <li className="text-gray-900 font-medium shrink-0 whitespace-nowrap">
+                Booking
+              </li>
+            </ol>
           </nav>
         </div>
       </div>
@@ -79,7 +107,7 @@ export default async function BookingPage({ params }: Props) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
         {/* Back Button */}
         <Link
-          href={`/vendor/${vendorDetail}/activities/${activityId}`}
+          href={activityPath(vendorDetail, activityId, listingFrom)}
           className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8 transition-colors"
         >
           <FiArrowLeft className="w-5 h-5 mr-2" />
@@ -108,7 +136,7 @@ export default async function BookingPage({ params }: Props) {
                     <FiExternalLink className="w-5 h-5" />
                   </a>
                   <Link
-                    href={`/vendor/${vendorDetail}/activities/${activityId}`}
+                    href={activityPath(vendorDetail, activityId, listingFrom)}
                     className="mt-6 inline-flex items-center text-gray-600 hover:text-gray-900 text-sm"
                   >
                     <FiArrowLeft className="w-4 h-4 mr-2" />

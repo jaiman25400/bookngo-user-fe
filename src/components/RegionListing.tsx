@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiMapPin, FiArrowRight, FiSearch, FiX, FiSliders } from "react-icons/fi";
+import type { ListingFrom } from "@/app/(public)/lib/listingContext";
+import { vendorPath } from "@/app/(public)/lib/listingContext";
 
 export interface RegionListingItem {
   id: number;
@@ -22,6 +24,8 @@ interface RegionListingProps {
   itemLabel: string;
   itemLabelPlural: string;
   basePath: string;
+  /** Skating vs ski listing — drives ?from= on vendor links (do not infer from names). */
+  listingFrom: ListingFrom;
   emptyMessage?: string;
   heroImageUrl?: string | null;
 }
@@ -29,13 +33,15 @@ interface RegionListingProps {
 function VenueCard({
   item,
   itemLabel,
+  listingFrom,
 }: {
   item: RegionListingItem;
   itemLabel: string;
+  listingFrom: ListingFrom;
 }) {
   return (
     <Link
-      href={`/vendor/${item.slug}`}
+      href={vendorPath(item.slug, listingFrom)}
       className="group block bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-100 h-full flex flex-col"
     >
       <div className="relative aspect-[16/10] bg-gradient-to-br from-sky-100 to-blue-100 overflow-hidden">
@@ -87,6 +93,7 @@ export default function RegionListing({
   itemLabel,
   itemLabelPlural,
   basePath,
+  listingFrom,
   emptyMessage = "No results match your filters.",
   heroImageUrl,
 }: RegionListingProps) {
@@ -266,7 +273,12 @@ export default function RegionListing({
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filteredAndSorted.map((item) => (
-                <VenueCard key={item.id} item={item} itemLabel={itemLabel} />
+                <VenueCard
+                  key={item.id}
+                  item={item}
+                  itemLabel={itemLabel}
+                  listingFrom={listingFrom}
+                />
               ))}
             </div>
           </>

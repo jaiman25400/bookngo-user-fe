@@ -67,6 +67,7 @@ export default async function RegionPage({ params }: Props) {
       itemLabel="resort"
       itemLabelPlural="resorts"
       basePath="/skiing"
+      listingFrom="skiing"
       emptyMessage="Try adjusting your search or filters to find resorts in this region."
       heroImageUrl={heroImageUrl}
     />
