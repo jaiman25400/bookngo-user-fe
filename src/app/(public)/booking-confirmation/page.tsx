@@ -279,6 +279,20 @@ export default function BookingConfirmationPage() {
     setShowRentalSummary(false);
   }, [selectedDate, selectedTime, selectedZone]);
 
+  useEffect(() => {
+    if (activeZones.length === 1) {
+      const onlyZone = activeZones[0];
+      setSelectedZone((prev) => (prev?.id === onlyZone.id ? prev : onlyZone));
+      return;
+    }
+
+    setSelectedZone((prev) => {
+      if (!prev) return prev;
+      const exists = activeZones.some((zone) => zone.id === prev.id);
+      return exists ? prev : null;
+    });
+  }, [activeZones]);
+
   const handleContinueWithoutRentals = () => {
     setRentalSelectionComplete(true);
     setShowRentalSummary(true);
@@ -738,13 +752,15 @@ export default function BookingConfirmationPage() {
                   <FiMapPin className="text-sky-600 mr-2" />
                   <h4 className="font-semibold text-gray-800">Selected Zone</h4>
                 </div>
-                <button
-                  onClick={() => setSelectedZone(null)}
-                  className="text-sky-600 hover:text-sky-800 text-sm font-medium flex items-center transition-colors"
-                >
-                  <FiRefreshCw className="mr-1" />
-                  Change
-                </button>
+                {activeZones.length > 1 && (
+                  <button
+                    onClick={() => setSelectedZone(null)}
+                    className="text-sky-600 hover:text-sky-800 text-sm font-medium flex items-center transition-colors"
+                  >
+                    <FiRefreshCw className="mr-1" />
+                    Change
+                  </button>
+                )}
               </div>
               <div className="flex items-center">
                 {apiImageUrl(selectedZone.zone_thumbnail_image) && (
