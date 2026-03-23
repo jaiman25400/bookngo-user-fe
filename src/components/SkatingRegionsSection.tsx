@@ -29,60 +29,53 @@ const REGION_IMAGES: Record<string, string> = {
 
 export default function SkatingRegionsSection() {
   return (
-    <section className="rounded-3xl border border-cyan-100 bg-[#edf7fa] p-5 sm:p-6 md:p-7">
-      <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h2 className="flex items-center gap-2 text-2xl font-bold tracking-tight text-slate-900">
-            <span
-              aria-hidden="true"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-cyan-100 text-lg"
-            >
-              ⛸️
-            </span>
-            Find ice skating by region
-          </h2>
-          <p className="mt-1 text-base text-slate-600">
-            Browse skating rings in your province
-          </p>
-        </div>
-        <span className="inline-flex w-fit items-center rounded-full border border-cyan-200 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cyan-700">
-          Featured Regions
+    <div>
+      <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-1 flex items-center gap-2">
+        <span
+          aria-hidden="true"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-cyan-100 text-lg"
+        >
+          ⛸️
         </span>
-      </div>
+        Find ice skating by region
+      </h2>
+      <p className="text-slate-600 text-base mb-6">
+        Browse skating rings in your province
+      </p>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {regions.map((region) => (
-          <Link
-            key={region.slug}
-            href={`/skates/${region.slug}`}
-            className="group overflow-hidden rounded-2xl border border-cyan-100 bg-white shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-            aria-label={`View skating rings in ${region.name}`}
-          >
-            <div className="relative h-28 sm:h-32">
-              <Image
-                src={REGION_IMAGES[region.slug] ?? "/images/home-bg.jpg"}
-                alt={`${region.name} skating region`}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                quality={84}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
-              <div className="absolute left-3 top-3 inline-flex items-center rounded-full border border-white/70 bg-white/90 px-2 py-0.5 text-[10px] font-semibold text-cyan-700">
-                ⛸️ Skating
+      {/* Match reference style: compact horizontal cards with minimal chrome */}
+      <div className="relative">
+        <div className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
+          {regions.map((region) => (
+            <Link
+              key={region.slug}
+              href={`/skates/${region.slug}`}
+              className="group relative flex-shrink-0 w-[82vw] sm:w-[46vw] lg:w-[24%] min-w-[250px] snap-start rounded-md overflow-hidden border border-slate-200 bg-white"
+              aria-label={`View skating rings in ${region.name}`}
+            >
+              <div className="relative h-32 sm:h-36 lg:h-32">
+                <Image
+                  src={REGION_IMAGES[region.slug] ?? "/images/home-bg.jpg"}
+                  alt={`${region.name} skating region`}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 640px) 82vw, (max-width: 1024px) 46vw, 24vw"
+                  quality={84}
+                />
+                <div className="absolute inset-0 bg-black/30" />
+
+                <p className="absolute top-3 left-1/2 -translate-x-1/2 text-white text-sm font-semibold whitespace-nowrap drop-shadow">
+                  {region.name}
+                </p>
+
+                <span className="absolute bottom-3 left-1/2 -translate-x-1/2 inline-flex items-center rounded-[3px] border border-white/85 bg-black/25 px-3 py-1 text-[10px] font-semibold text-white tracking-wide">
+                  Search
+                </span>
               </div>
-            </div>
-            <div className="p-4">
-              <h3 className="text-[28px] leading-none font-bold text-slate-900 sm:text-[30px]">
-                {region.name}
-              </h3>
-              <span className="mt-3 inline-flex items-center rounded-md bg-cyan-600 px-3 py-1.5 text-xs font-semibold text-white transition-colors group-hover:bg-cyan-700">
-                Explore rings
-              </span>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
