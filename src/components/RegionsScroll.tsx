@@ -18,8 +18,14 @@ const regions = [
 export default function RegionsScroll() {
   return (
     <div>
-      <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-2">
-        Find slopes by region
+      <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight mb-2 flex items-center gap-2">
+        <span
+          aria-hidden="true"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-100 text-lg"
+        >
+          ⛷️
+        </span>
+        Find ski resorts by region
       </h2>
       <p className="text-slate-600 text-base mb-6 sm:mb-8">
         Browse ski resorts in your province

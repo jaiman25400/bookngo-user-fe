@@ -59,17 +59,17 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Ski regions — same container + padding as skating (no nested containers) */}
-      <section className="bg-white relative z-10 py-10 sm:py-12 md:py-16">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
-          <RegionsScroll />
-        </div>
-      </section>
-
       {/* Ice skating by region */}
       <section className="bg-white relative z-10 border-t border-slate-200 py-10 sm:py-12 md:py-16">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
           <SkatingRegionsSection />
+        </div>
+      </section>
+
+      {/* Ski regions */}
+      <section className="bg-white relative z-10 border-t border-slate-200 py-10 sm:py-12 md:py-16">
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 xl:px-12">
+          <RegionsScroll />
         </div>
       </section>
 
@@ -89,28 +89,52 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About & Contact */}
+      {/* Mission and partner CTA */}
       <section className="relative z-10 py-12 md:py-16 bg-white border-t border-slate-200">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-xl md:text-2xl font-bold text-slate-900 text-center mb-8">
-            Learn more
-          </h2>
-          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
             <Link
               href="/about"
-              className="group flex items-center justify-center gap-3 px-6 py-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-800 font-medium transition-all"
+              className="group rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 p-6 md:p-8 transition-all"
               aria-label="About Us"
             >
-              <FiInfo className="w-5 h-5 text-slate-600" />
-              About Us
+              <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white border border-slate-200 mb-4">
+                <FiInfo className="w-5 h-5 text-slate-700" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
+                Our goal is to help more people enjoy winter outdoors.
+              </h3>
+              <p className="text-slate-600 leading-relaxed mb-5">
+                Easily discover and book trusted ski resorts and skating rings
+                across Canada. Whether it is your first season or you are a
+                long-time winter enthusiast, we help you find a destination
+                that matches your style.
+              </p>
+              <span className="inline-flex items-center text-sky-700 font-semibold">
+                Learn about us
+                <FiArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </span>
             </Link>
             <Link
               href="/contact"
-              className="group flex items-center justify-center gap-3 px-6 py-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 bg-slate-50 hover:bg-slate-100 text-slate-800 font-medium transition-all"
+              className="group rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 p-6 md:p-8 transition-all"
               aria-label="Contact Us"
             >
-              <FiPhone className="w-5 h-5 text-slate-600" />
-              Contact Us
+              <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white border border-slate-200 mb-4">
+                <FiPhone className="w-5 h-5 text-slate-700" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
+                Are you a resort or skating venue owner?
+              </h3>
+              <p className="text-slate-600 leading-relaxed mb-5">
+                BookNGo can help you grow your business with online visibility,
+                better booking flow, and customer support tools. Contact us to
+                discuss partnership and onboarding.
+              </p>
+              <span className="inline-flex items-center text-sky-700 font-semibold">
+                Contact us
+                <FiArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </span>
             </Link>
           </div>
         </div>
