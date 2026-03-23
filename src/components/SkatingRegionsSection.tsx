@@ -50,16 +50,16 @@ export default function SkatingRegionsSection() {
             <Link
               key={region.slug}
               href={`/skates/${region.slug}`}
-              className="group relative flex-shrink-0 w-[78vw] sm:w-[62vw] md:w-[44vw] lg:w-[31vw] xl:w-[24vw] min-w-[240px] snap-start rounded-md overflow-hidden border border-slate-200 bg-white"
+              className="group relative flex-shrink-0 w-[84vw] sm:w-[68vw] md:w-[48vw] lg:w-[34vw] xl:w-[27vw] min-w-[260px] snap-start rounded-md overflow-hidden border border-slate-200 bg-white"
               aria-label={`View skating rings in ${region.name}`}
             >
-              <div className="relative h-36 sm:h-40 lg:h-44">
+              <div className="relative h-40 sm:h-44 lg:h-48">
                 <Image
                   src={REGION_IMAGES[region.slug] ?? "/images/home-bg.jpg"}
                   alt={`${region.name} skating region`}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 72vw, (max-width: 1280px) 34vw, 26vw"
+                  sizes="(max-width: 640px) 84vw, (max-width: 1024px) 68vw, (max-width: 1280px) 48vw, (max-width: 1536px) 34vw, 27vw"
                   quality={84}
                 />
                 <div className="absolute inset-0 bg-black/30" />
