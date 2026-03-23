@@ -61,14 +61,14 @@ export default function HomePage() {
 
       {/* Ice skating by region */}
       <section className="bg-white relative z-10 border-t border-slate-200 py-10 sm:py-12 md:py-16">
-        <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8 lg:px-10 xl:px-14">
+        <div className="mx-auto w-full max-w-none px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-14">
           <SkatingRegionsSection />
         </div>
       </section>
 
       {/* Ski regions */}
       <section className="bg-white relative z-10 border-t border-slate-200 py-10 sm:py-12 md:py-16">
-        <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8 lg:px-10 xl:px-14">
+        <div className="mx-auto w-full max-w-none px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-14">
           <RegionsScroll />
         </div>
       </section>
