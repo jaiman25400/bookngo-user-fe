@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiX } from "react-icons/fi";
+import { apiImageUrl } from "../../../../lib/apiImageUrl";
 
 interface ImageGalleryProps {
   images: string[];
@@ -51,11 +52,8 @@ export default function ImageGallery({
     return null;
   }
 
-  const baseUrl = (process.env.NEXT_PUBLIC_API_BASE_URL || "").replace(/\/$/, "");
   const currentImagePath = images[currentIndex];
-  const currentImageSrc = currentImagePath
-    ? `${baseUrl}${currentImagePath.startsWith("/") ? "" : "/"}${encodeURI(currentImagePath)}`
-    : "";
+  const currentImageSrc = apiImageUrl(currentImagePath) ?? "";
 
   return (
     <>

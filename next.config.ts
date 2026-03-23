@@ -34,6 +34,17 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
         pathname: "/**",
       },
+      // S3 presigned URLs from API (e.g. home_image_url)
+      {
+        protocol: "https",
+        hostname: "**.amazonaws.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.bookngo.ca",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };
