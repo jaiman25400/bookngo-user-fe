@@ -14,17 +14,17 @@ const regions = [
 
 const REGION_IMAGES: Record<string, string> = {
   Ontario:
-    "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1517963879433-6ad2b061d934?auto=format&fit=crop&w=1600&q=80",
   Quebec:
-    "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1600&q=80",
   "British-Columbia":
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?auto=format&fit=crop&w=1600&q=80",
   Mnitoba:
-    "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1542601098-8fc114e148e2?auto=format&fit=crop&w=1600&q=80",
   "New-Brunswick":
-    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1518604666860-9ed391f76460?auto=format&fit=crop&w=1600&q=80",
   "Nova-Scotia":
-    "https://images.unsplash.com/photo-1521185496955-15097b20c5fe?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1482192505345-5655af888cc4?auto=format&fit=crop&w=1600&q=80",
 };
 
 export default function SkatingRegionsSection() {
@@ -64,7 +64,7 @@ export default function SkatingRegionsSection() {
                 />
                 <div className="absolute inset-0 bg-black/30" />
 
-                <p className="absolute top-3 left-1/2 -translate-x-1/2 text-white text-sm font-semibold whitespace-nowrap drop-shadow">
+                <p className="absolute top-3 left-1/2 -translate-x-1/2 text-white text-base sm:text-lg font-bold whitespace-nowrap drop-shadow">
                   {region.name}
                 </p>
 

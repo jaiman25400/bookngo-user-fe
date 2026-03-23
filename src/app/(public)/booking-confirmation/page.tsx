@@ -127,6 +127,7 @@ export default function BookingConfirmationPage() {
   const [slotError, setSlotError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [bookingResolved, setBookingResolved] = useState(false);
 
   const router = useRouter();
 
@@ -142,10 +143,12 @@ export default function BookingConfirmationPage() {
           const parsed = JSON.parse(sessionData);
           setBooking(parsed);
           sessionStorage.removeItem("booking-data");
+          setBookingResolved(true);
           return;
         } catch {
           setError("Invalid booking data. Please start over.");
           setLoading(false);
+          setBookingResolved(true);
           return;
         }
       }
@@ -167,15 +170,20 @@ export default function BookingConfirmationPage() {
         setError("No booking data found. Please complete your booking first.");
         setLoading(false);
       }
+      setBookingResolved(true);
     } catch {
       setError("An error occurred while loading booking data.");
       setLoading(false);
+      setBookingResolved(true);
     }
   }, []);
 
   useEffect(() => {
     const fetchActivityDetails = async () => {
+      if (!bookingResolved) return;
+
       if (!booking?.activityId) {
+        setError((prev) => prev || "No booking data found. Please start over.");
         setLoading(false);
         return;
       }
@@ -228,7 +236,7 @@ export default function BookingConfirmationPage() {
     };
 
     fetchActivityDetails();
-  }, [booking]);
+  }, [booking, bookingResolved]);
 
   useEffect(() => {
     const fetchSlotAvailability = async () => {
@@ -711,7 +719,7 @@ export default function BookingConfirmationPage() {
                   >
                     <div className="flex flex-col h-full">
                       {zoneThumbUrl && (
-                        <div className="relative w-full h-40 mb-3 overflow-hidden rounded-lg">
+                        <div className="relative w-full h-52 mb-3 overflow-hidden rounded-lg">
                           <Image
                             src={zoneThumbUrl}
                             alt={zone.name}
@@ -746,7 +754,7 @@ export default function BookingConfirmationPage() {
           )}
 
           {selectedZone && (
-            <div className="mt-6 p-4 bg-sky-50 rounded-lg border border-sky-200">
+            <div className="mt-6 p-5 bg-sky-50 rounded-xl border border-sky-200">
               <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center">
                   <FiMapPin className="text-sky-600 mr-2" />
@@ -762,32 +770,39 @@ export default function BookingConfirmationPage() {
                   </button>
                 )}
               </div>
-              <div className="flex items-center">
-                {apiImageUrl(selectedZone.zone_thumbnail_image) && (
-                  <div className="relative w-16 h-16 rounded-lg overflow-hidden mr-3 border border-gray-200 flex-shrink-0">
+              <div className="grid grid-cols-1 md:grid-cols-[220px,1fr] gap-4 items-start">
+                {apiImageUrl(selectedZone.zone_thumbnail_image) ? (
+                  <div className="relative w-full h-40 md:h-36 rounded-lg overflow-hidden border border-gray-200">
                     <Image
                       src={apiImageUrl(selectedZone.zone_thumbnail_image)!}
                       alt={selectedZone.name}
                       fill
                       className="object-cover"
-                      sizes="64px"
+                      sizes="(max-width: 768px) 100vw, 220px"
                       loading="lazy"
-                      quality={80}
+                      quality={85}
                     />
                   </div>
+                ) : (
+                  <div className="w-full h-40 md:h-36 rounded-lg border border-dashed border-sky-300 bg-sky-100/60 flex items-center justify-center text-sky-700 text-sm font-medium">
+                    No image available
+                  </div>
                 )}
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-gray-900 truncate">
+                <div className="min-w-0">
+                  <p className="text-lg font-semibold text-gray-900">
                     {selectedZone.name}
                   </p>
-                  <p className="text-sm text-gray-600 truncate">
-                    {selectedZone.description}
+                  <p className="text-sm text-gray-600 mt-1 whitespace-pre-line">
+                    {selectedZone.description || "No description available for this zone."}
                   </p>
-                  <div className="flex items-center mt-1">
-                    <span className="bg-sky-100 text-sky-800 text-xs px-2 py-1 rounded mr-2">
+                  <div className="flex flex-wrap items-center gap-2 mt-3">
+                    <span className="bg-sky-100 text-sky-800 text-xs px-2.5 py-1 rounded">
                       {selectedZone.age_group}
                     </span>
-                    <span className="font-medium">${selectedZone.price}</span>
+                    <span className="bg-white text-gray-800 text-sm px-2.5 py-1 rounded border border-sky-200">
+                      Capacity: {selectedZone.capacity}
+                    </span>
+                    <span className="font-semibold text-gray-900">${selectedZone.price}</span>
                   </div>
                 </div>
               </div>
