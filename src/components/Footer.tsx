@@ -2,12 +2,6 @@ import Link from "next/link";
 import {
   FiMail,
   FiPhone,
-  FiMapPin,
-  FiFacebook,
-  FiTwitter,
-  FiInstagram,
-  FiLinkedin,
-  FiYoutube,
 } from "react-icons/fi";
 
 export default function Footer() {
@@ -32,54 +26,7 @@ export default function Footer() {
               gateway to unforgettable ski resorts, skating rings, and winter
               adventures.
             </p>
-            {/* Social Media Links */}
-            <div className="flex space-x-4">
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit our Facebook page"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-sky-600 flex items-center justify-center transition-colors group"
-              >
-                <FiFacebook className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit our Twitter page"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-sky-600 flex items-center justify-center transition-colors group"
-              >
-                <FiTwitter className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit our Instagram page"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-sky-600 flex items-center justify-center transition-colors group"
-              >
-                <FiInstagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit our LinkedIn page"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-sky-600 flex items-center justify-center transition-colors group"
-              >
-                <FiLinkedin className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Visit our YouTube channel"
-                className="w-10 h-10 rounded-full bg-gray-800 hover:bg-sky-600 flex items-center justify-center transition-colors group"
-              >
-                <FiYoutube className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              </a>
-            </div>
+            {/* Social media intentionally hidden until official profiles are available */}
           </div>
 
           {/* Quick Links Column */}
@@ -188,32 +135,22 @@ export default function Footer() {
           <div>
             <h3 className="text-white font-semibold text-lg mb-4">Contact</h3>
             <ul className="space-y-3 mb-6">
-              <li className="flex items-start">
-                <FiMapPin className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-gray-400" />
-                <span className="text-sm text-gray-400">
-                  123 Winter Avenue
-                  <br />
-                  Toronto, ON M5H 2N2
-                  <br />
-                  Canada
-                </span>
-              </li>
               <li className="flex items-center">
                 <FiPhone className="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" />
                 <a
-                  href="tel:+1-800-123-4567"
+                  href="tel:+1-226-975-7793"
                   className="text-sm hover:text-sky-400 transition-colors"
                 >
-                  +1 (800) 123-4567
+                  226 975 7793
                 </a>
               </li>
               <li className="flex items-center">
                 <FiMail className="w-5 h-5 mr-3 flex-shrink-0 text-gray-400" />
                 <a
-                  href="mailto:support@bookngo.com"
+                  href="mailto:business.bookngo@gmail.com"
                   className="text-sm hover:text-sky-400 transition-colors break-all"
                 >
-                  support@bookngo.com
+                  business.bookngo@gmail.com
                 </a>
               </li>
             </ul>
