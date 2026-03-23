@@ -45,21 +45,21 @@ export default function SkatingRegionsSection() {
 
       {/* Match reference style: compact horizontal cards with minimal chrome */}
       <div className="relative">
-        <div className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2">
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-3">
           {regions.map((region) => (
             <Link
               key={region.slug}
               href={`/skates/${region.slug}`}
-              className="group relative flex-shrink-0 w-[82vw] sm:w-[46vw] lg:w-[24%] min-w-[250px] snap-start rounded-md overflow-hidden border border-slate-200 bg-white"
+              className="group relative flex-shrink-0 w-[min(90vw,380px)] sm:w-[min(72vw,430px)] md:w-[calc(50%-0.5rem)] lg:w-[calc(34%-0.67rem)] xl:w-[calc(26%-0.67rem)] snap-start rounded-md overflow-hidden border border-slate-200 bg-white"
               aria-label={`View skating rings in ${region.name}`}
             >
-              <div className="relative h-32 sm:h-36 lg:h-32">
+              <div className="relative h-36 sm:h-40 lg:h-44">
                 <Image
                   src={REGION_IMAGES[region.slug] ?? "/images/home-bg.jpg"}
                   alt={`${region.name} skating region`}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 82vw, (max-width: 1024px) 46vw, 24vw"
+                  sizes="(max-width: 640px) 90vw, (max-width: 1024px) 72vw, (max-width: 1280px) 34vw, 26vw"
                   quality={84}
                 />
                 <div className="absolute inset-0 bg-black/30" />
