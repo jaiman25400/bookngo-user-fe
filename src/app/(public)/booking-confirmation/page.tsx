@@ -687,17 +687,19 @@ export default function BookingConfirmationPage() {
                 Select Activity Zone
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {activeZones.map((zone) => (
+                {activeZones.map((zone) => {
+                  const zoneThumbUrl = apiImageUrl(zone.zone_thumbnail_image);
+                  return (
                   <div
                     key={zone.id}
                     className="border rounded-xl p-4 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg border-gray-200 bg-white"
                     onClick={() => setSelectedZone(zone)}
                   >
                     <div className="flex flex-col h-full">
-                      {zone.zone_thumbnail_image && (
+                      {zoneThumbUrl && (
                         <div className="relative w-full h-40 mb-3 overflow-hidden rounded-lg">
                           <Image
-                            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${zone.zone_thumbnail_image}`}
+                            src={zoneThumbUrl}
                             alt={zone.name}
                             fill
                             className="object-cover transition-transform duration-500 hover:scale-105"
@@ -723,7 +725,8 @@ export default function BookingConfirmationPage() {
                       </div>
                     </div>
                   </div>
-                ))}
+                );
+                })}
               </div>
             </div>
           )}

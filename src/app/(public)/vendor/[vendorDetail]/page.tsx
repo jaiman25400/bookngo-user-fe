@@ -25,9 +25,7 @@ function ActivityCard({
   activity: VendorActivity;
   vendorSlug: string;
 }) {
-  const imageUrl = activity.activity_thumbnail_image
-    ? `${process.env.NEXT_PUBLIC_API_BASE_URL}${activity.activity_thumbnail_image}`
-    : null;
+  const imageUrl = apiImageUrl(activity.activity_thumbnail_image);
 
   return (
     <Link
