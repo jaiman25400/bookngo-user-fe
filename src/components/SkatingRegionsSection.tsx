@@ -45,12 +45,12 @@ export default function SkatingRegionsSection() {
 
       {/* Match reference style: compact horizontal cards with minimal chrome */}
       <div className="relative">
-        <div className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-3 lg:grid lg:grid-cols-3 lg:gap-6 lg:overflow-visible lg:pb-0 lg:snap-none">
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-3">
           {regions.map((region) => (
             <Link
               key={region.slug}
               href={`/skates/${region.slug}`}
-              className="group relative flex-shrink-0 w-[min(90vw,380px)] sm:w-[min(72vw,430px)] md:w-[calc(50%-0.5rem)] lg:w-auto lg:min-w-0 lg:snap-none rounded-md overflow-hidden border border-slate-200 bg-white"
+              className="group relative flex-shrink-0 w-[78vw] sm:w-[62vw] md:w-[44vw] lg:w-[31vw] xl:w-[24vw] min-w-[240px] snap-start rounded-md overflow-hidden border border-slate-200 bg-white"
               aria-label={`View skating rings in ${region.name}`}
             >
               <div className="relative h-36 sm:h-40 lg:h-44">
@@ -76,6 +76,7 @@ export default function SkatingRegionsSection() {
           ))}
         </div>
       </div>
+      <p className="mt-2 text-xs text-slate-500 sm:hidden">Swipe to explore more regions</p>
     </div>
   );
 }

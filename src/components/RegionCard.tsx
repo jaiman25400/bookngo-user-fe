@@ -42,7 +42,7 @@ export default function RegionCard({
   return (
     <Link
       href={href}
-      className="group block relative aspect-[4/3] min-h-[180px] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+      className="group block relative aspect-[4/3] min-h-[165px] rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
       aria-label={ariaLabel}
     >
       {/* Background Image with Gradient Overlay */}
@@ -59,18 +59,18 @@ export default function RegionCard({
       </div>
 
       {/* Content — same layout for ski & skate; icon + title scale together */}
-      <div className="relative h-full flex flex-col justify-between p-4 sm:p-5 md:p-6">
+      <div className="relative h-full flex flex-col justify-between p-3.5 sm:p-4.5 md:p-5">
         <div className="text-center">
-          <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white/20 backdrop-blur-sm mb-2 sm:mb-3 group-hover:bg-white/30 transition-colors">
+          <div className="inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/20 backdrop-blur-sm mb-1.5 sm:mb-2 group-hover:bg-white/30 transition-colors">
             {variant === "skate" ? (
-              <span className="text-xl sm:text-2xl leading-none" aria-hidden>
+              <span className="text-base sm:text-lg leading-none" aria-hidden>
                 ⛸️
               </span>
             ) : (
-              <FiMapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <FiMapPin className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             )}
           </div>
-          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 sm:mb-2 drop-shadow-lg group-hover:scale-[1.02] transition-transform duration-300">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1 sm:mb-1.5 drop-shadow-lg group-hover:scale-[1.02] transition-transform duration-300">
             {name}
           </h3>
         </div>
