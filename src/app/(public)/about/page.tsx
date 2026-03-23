@@ -18,9 +18,10 @@ export const metadata = {
 
 const IMG = {
   ski: "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800&q=80",
-  snowboard: "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=800&q=80",
+  snowboard:
+    "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=800&q=80",
   tubing: "https://images.unsplash.com/photo-1548777123-e216912df7d8?w=800&q=80",
-  skating: "https://images.unsplash.com/photo-1517963879433-6ad2b061d934?w=800&q=80",
+  skating: "https://images.unsplash.com/photo-1516557070061-c3d1653fa646?w=800&q=80",
   winter: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=800&q=80",
 };
 
@@ -29,26 +30,26 @@ export default function AboutPage() {
     {
       title: "Skiing",
       description:
-        "Discover and book ski slopes at top resorts across Canada. Find runs for every level — from gentle greens to challenging blacks — and enjoy the winter mountains with family or friends.",
+        "Discover ski resorts across Canada and book with confidence. From beginner-friendly runs to advanced terrain, it is easy to find a slope that fits your day.",
       image: IMG.ski,
+    },
+    {
+      title: "Ice Skating",
+      description:
+        "Find indoor and outdoor skating rings across Canada, from city favorites to scenic winter trails. Book quickly and get on the ice sooner.",
+      image: IMG.skating,
     },
     {
       title: "Snowboarding",
       description:
-        "Hit the slopes on a snowboard. We connect you with resorts that offer terrain parks, half-pipes, groomed runs, and backcountry access for every style of rider.",
+        "Explore snowboard-friendly resorts with terrain parks, groomed runs, and options for every skill level. Plan your trip in minutes.",
       image: IMG.snowboard,
     },
     {
       title: "Tubing",
       description:
-        "Family-friendly snow tubing at winter parks and resorts. Safe, fun, and easy to book for all ages. No experience needed — just slide and smile.",
+        "Book family-friendly tubing sessions at winter parks and resorts. No experience needed, just pick a time and enjoy the ride.",
       image: IMG.tubing,
-    },
-    {
-      title: "Ice Skating",
-      description:
-        "Skating rings and outdoor ice experiences across Canada. From community skating rings to scenic frozen trails and lake skating, find your glide year-round.",
-      image: IMG.skating,
     },
   ];
 
@@ -95,16 +96,16 @@ export default function AboutPage() {
               Our Story
             </h2>
             <p className="text-slate-600 text-lg leading-relaxed mb-6">
-              Book N Go was built for everyone who loves winter — whether you&apos;re
-              a first-timer or a seasoned skier, a family looking for tubing or
-              friends planning a skate. We saw how hard it could be to find and
-              book winter activities in one place, so we created a single platform
-              focused on what matters: skiing, snowboarding, tubing, and ice skating.
+              Book N Go started with a simple idea: planning winter activities
+              should feel exciting, not complicated. We wanted one place where
+              people can quickly compare options, check availability, and book
+              without jumping between multiple websites.
             </p>
             <p className="text-slate-600 text-lg leading-relaxed">
-              We partner with resorts, skating rings, and winter parks across Canada to give
-              you a clear view of what&apos;s available, when, and how to book. Our
-              goal is simple: make it easy to get outside and enjoy winter.
+              Today, we work with resorts, skating rings, and winter parks
+              across Canada to make that possible. Whether you&apos;re planning a
+              weekend trip or a same-day outing, Book N Go helps you spend less
+              time searching and more time enjoying winter.
             </p>
           </div>
         </div>
@@ -126,8 +127,8 @@ export default function AboutPage() {
                   <div>
                     <h3 className="text-lg font-bold text-slate-800 mb-1">Our Mission</h3>
                     <p className="text-slate-600 text-sm">
-                      To connect people with winter experiences they love — through
-                      easy discovery, transparent booking, and trusted partners.
+                      Help people discover and book great winter experiences
+                      quickly, clearly, and confidently.
                     </p>
                   </div>
                 </div>
@@ -138,8 +139,8 @@ export default function AboutPage() {
                   <div>
                     <h3 className="text-lg font-bold text-slate-800 mb-1">Our Vision</h3>
                     <p className="text-slate-600 text-sm">
-                      To be the go-to place for booking winter activities in Canada —
-                      find, compare, and book in a few clicks.
+                      Be Canada&apos;s most trusted platform for planning winter
+                      activities from first search to final booking.
                     </p>
                   </div>
                 </div>
@@ -204,11 +205,11 @@ export default function AboutPage() {
           <p className="text-slate-600 text-center max-w-2xl mx-auto mb-12">
             Simple values that make your winter booking easier and more reliable.
           </p>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 -mx-1 px-1 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:mx-0 sm:px-0 sm:pb-0 lg:grid-cols-4">
             {values.map(({ icon: Icon, title, description }) => (
               <div
                 key={title}
-                className="p-6 rounded-2xl border border-slate-200 bg-slate-50/50 hover:border-sky-200 hover:bg-sky-50/30 transition-colors text-center md:text-left"
+                className="snap-start flex-shrink-0 w-[78vw] sm:w-auto p-6 rounded-2xl border border-slate-200 bg-slate-50/50 hover:border-sky-200 hover:bg-sky-50/30 transition-colors text-center md:text-left"
               >
                 <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center mb-4 mx-auto md:mx-0">
                   <Icon className="w-5 h-5 text-sky-600" />
@@ -218,6 +219,9 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
+          <p className="mt-2 text-xs text-slate-500 sm:hidden">
+            Swipe to see more
+          </p>
         </div>
       </section>
 
