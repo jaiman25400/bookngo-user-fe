@@ -22,6 +22,10 @@ export interface VendorCustomerData {
   customer_description: string | null;
   about_us: string | null;
   home_image_url: string | null;
+  customer_latitude?: number | null;
+  customer_longitude?: number | null;
+  customer_address?: string | null;
+  customer_display_phone?: string | null;
 }
 
 export interface VendorData {

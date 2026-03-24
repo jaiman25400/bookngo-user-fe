@@ -150,6 +150,18 @@ export default async function VendorPage({ params, searchParams }: Props) {
   const hasActivities = activity && activity.length > 0;
 
   const heroImageUrl = apiImageUrl(customerData.home_image_url);
+  const hasCoordinates =
+    typeof customerData.customer_latitude === "number" &&
+    typeof customerData.customer_longitude === "number";
+  const mapQuery = hasCoordinates
+    ? `${customerData.customer_latitude},${customerData.customer_longitude}`
+    : customerData.customer_city || customerData.customer_display_name;
+  const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
+    mapQuery
+  )}&z=14&output=embed`;
+  const mapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    mapQuery
+  )}`;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -195,7 +207,7 @@ export default async function VendorPage({ params, searchParams }: Props) {
         </div>
 
         {/* Hero Image with Overlay */}
-        <div className="relative h-[60vh] min-h-[500px] md:h-[70vh] overflow-hidden">
+        <div className="relative h-[48vh] min-h-[340px] md:h-[56vh] md:min-h-[420px] overflow-hidden">
           {heroImageUrl ? (
             <>
               <Image
@@ -207,7 +219,7 @@ export default async function VendorPage({ params, searchParams }: Props) {
                 priority
                 quality={90}
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/45 to-black/70" />
             </>
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-sky-900 via-blue-900 to-gray-900" />
@@ -215,23 +227,33 @@ export default async function VendorPage({ params, searchParams }: Props) {
 
           {/* Vendor Info Overlay */}
           <div className="relative h-full flex items-end">
-            <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-12 md:pb-16">
-              <div className="max-w-4xl">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight drop-shadow-lg">
+            <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pb-6 md:pb-8">
+              <div className="max-w-3xl rounded-2xl border border-white/20 bg-black/35 backdrop-blur-md p-4 md:p-6 shadow-2xl">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 tracking-tight drop-shadow-lg">
                   {customerData.customer_display_name}
                 </h1>
 
-                {customerData.customer_city && (
-                  <div className="flex items-center text-white/90 mb-4">
-                    <FiMapPin className="w-5 h-5 mr-2 text-sky-300" />
-                    <span className="text-lg md:text-xl font-medium">
-                      {customerData.customer_city}
-                    </span>
-                  </div>
-                )}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-white/90 mb-3">
+                  {customerData.customer_city && (
+                    <div className="flex items-center">
+                      <FiMapPin className="w-4 h-4 mr-1.5 text-sky-300" />
+                      <span className="text-sm md:text-base font-medium">
+                        {customerData.customer_city}
+                      </span>
+                    </div>
+                  )}
+                  <a
+                    href={mapsDirectionsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-xs md:text-sm font-semibold text-sky-200 hover:text-white transition-colors underline underline-offset-2"
+                  >
+                    Get directions
+                  </a>
+                </div>
 
                 {customerData.customer_description && (
-                  <p className="text-lg md:text-xl text-white/95 max-w-3xl leading-relaxed drop-shadow-md">
+                  <p className="text-sm md:text-base text-white/95 max-w-3xl leading-relaxed drop-shadow-md line-clamp-2">
                     {customerData.customer_description}
                   </p>
                 )}
@@ -239,6 +261,40 @@ export default async function VendorPage({ params, searchParams }: Props) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Location & map preview */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <section className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            <div className="p-6 md:p-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-3">Location</h2>
+              <p className="text-gray-600 leading-relaxed mb-5">
+                {customerData.customer_address ||
+                  customerData.customer_city ||
+                  "Location details are available on map."}
+              </p>
+              <a
+                href={mapsDirectionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-lg transition-colors"
+              >
+                Open in Google Maps
+                <FiArrowRight className="ml-2 w-4 h-4" />
+              </a>
+            </div>
+            <div className="relative min-h-[260px] lg:min-h-[320px] border-t lg:border-t-0 lg:border-l border-gray-200">
+              <iframe
+                title={`${customerData.customer_display_name} location map`}
+                src={mapEmbedSrc}
+                className="absolute inset-0 w-full h-full"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+        </section>
       </div>
 
       {/* Main Content */}
