@@ -23,9 +23,13 @@ export async function fetchRegionResorts(region: string): Promise<ApiResponse<Re
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+    const params = new URLSearchParams({
+      region,
+      activityType: "skiing",
+    });
 
     const response = await fetch(
-      `${API_BASE_URL}/user/ski-slopes?region=${encodeURIComponent(region)}`,
+      `${API_BASE_URL}/user/ski-slopes?${params.toString()}`,
       {
         signal: controller.signal,
         headers: {

@@ -19,11 +19,12 @@ export const metadata = {
 const IMG = {
   ski: "https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800&q=80",
   snowboard:
-    "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?auto=format&fit=crop&w=1200&q=80",
+    "https://facts.net/wp-content/uploads/2023/05/man-snowboarding.jpeg",
+   
   tubing:
-    "https://images.unsplash.com/photo-1548777123-e216912df7d8?auto=format&fit=crop&w=1200&q=80",
+    "https://blog.trekaroo.com/wp-content/uploads/2022/02/Snow-Tubing-in-Banff-by-Mt-Norquay.jpg",
   skating:
-    "https://images.unsplash.com/photo-1516557070061-c3d1653fa646?auto=format&fit=crop&w=1200&q=80",
+    "https://okcmom.com/wp-content/uploads/2022/12/OKC-Ice-Skating-Oklahoma-City.png",
   winter: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?w=800&q=80",
 };
 
