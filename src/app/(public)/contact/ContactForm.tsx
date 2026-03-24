@@ -128,9 +128,6 @@ export default function ContactForm() {
               )}
             </button>
           </form>
-          <p className="text-slate-500 text-sm mt-4">
-            Messages are sent to our team. Add <code className="bg-slate-100 px-1 rounded">RESEND_API_KEY</code> in .env to receive emails at business.bookngo@gmail.com.
-          </p>
         </>
       )}
     </div>
