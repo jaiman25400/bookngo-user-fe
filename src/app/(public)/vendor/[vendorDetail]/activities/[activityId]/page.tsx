@@ -20,6 +20,7 @@ import {
   FiExternalLink,
 } from "react-icons/fi";
 import ImageGallery from "./ImageGallery";
+import type { ActivitySchedule } from "./vendorActivityApi";
 
 export const revalidate = 600; // Revalidate every 10 minutes
 
@@ -71,6 +72,36 @@ export default async function ActivityPage({ params, searchParams }: Props) {
     // Fallback to thumbnail if no gallery images
     images.push(data.activity_thumbnail_image);
   }
+
+  const dayOrder: Record<string, number> = {
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+    sunday: 7,
+  };
+
+  const formatTime = (value: string | null | undefined) => {
+    if (!value) return "N/A";
+    // API provides "HH:mm:ss"
+    const [hRaw, mRaw] = value.split(":");
+    const h = Number(hRaw);
+    const m = Number(mRaw || "0");
+    if (Number.isNaN(h) || Number.isNaN(m)) return value;
+    const ampm = h >= 12 ? "PM" : "AM";
+    const twelveHour = h % 12 || 12;
+    return `${twelveHour}:${String(m).padStart(2, "0")} ${ampm}`;
+  };
+
+  const weeklySchedule: ActivitySchedule[] = Array.isArray(data.schedules)
+    ? [...data.schedules].sort(
+        (a, b) =>
+          (dayOrder[a.day?.toLowerCase()] ?? 99) -
+          (dayOrder[b.day?.toLowerCase()] ?? 99)
+      )
+    : [];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -194,6 +225,39 @@ export default async function ActivityPage({ params, searchParams }: Props) {
                       {data.safety_instructions}
                     </p>
                   </div>
+                </div>
+              </section>
+            )}
+
+            {/* Weekly Schedule */}
+            {weeklySchedule.length > 0 && (
+              <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-5">
+                  Weekly Schedule
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {weeklySchedule.map((slot) => (
+                    <div
+                      key={slot.id}
+                      className="rounded-xl border border-gray-200 bg-gray-50 p-4"
+                    >
+                      <div className="flex items-center justify-between">
+                        <p className="font-semibold text-gray-900">{slot.day}</p>
+                        {slot.is_holiday && (
+                          <span className="text-[11px] font-semibold uppercase tracking-wide bg-amber-100 text-amber-800 px-2 py-0.5 rounded">
+                            Holiday
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-gray-600 mt-1">
+                        {slot.is_24hours
+                          ? "Open 24 hours"
+                          : `${formatTime(slot.start_time)} - ${formatTime(
+                              slot.end_time
+                            )}`}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </section>
             )}

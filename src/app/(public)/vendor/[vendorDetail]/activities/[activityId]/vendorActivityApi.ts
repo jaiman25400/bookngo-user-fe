@@ -23,6 +23,18 @@ export interface ActivityData {
   redirect_to_external_website?: boolean;
   /** URL to redirect users for booking (when redirect_to_external_website is true) */
   external_booking_url?: string | null;
+  schedules?: ActivitySchedule[] | null;
+}
+
+export interface ActivitySchedule {
+  id: number;
+  day: string;
+  start_time: string | null;
+  end_time: string | null;
+  duration?: string | null;
+  price?: string | null;
+  is_24hours: boolean;
+  is_holiday: boolean;
 }
 
 export async function fetchVendorActivityByID(
