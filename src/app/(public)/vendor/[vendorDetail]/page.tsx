@@ -153,14 +153,22 @@ export default async function VendorPage({ params, searchParams }: Props) {
   const hasCoordinates =
     typeof customerData.customer_latitude === "number" &&
     typeof customerData.customer_longitude === "number";
+  const destinationLabel = [
+    customerData.customer_display_name,
+    customerData.customer_address,
+    customerData.customer_city,
+  ]
+    .filter(Boolean)
+    .join(", ");
+  // Keep name in the query so Maps resolves to the venue, not just city.
   const mapQuery = hasCoordinates
-    ? `${customerData.customer_latitude},${customerData.customer_longitude}`
-    : customerData.customer_city || customerData.customer_display_name;
+    ? `${customerData.customer_latitude},${customerData.customer_longitude} (${customerData.customer_display_name})`
+    : destinationLabel || customerData.customer_display_name;
   const mapEmbedSrc = `https://www.google.com/maps?q=${encodeURIComponent(
     mapQuery
-  )}&z=14&output=embed`;
+  )}&z=15&output=embed`;
   const mapsDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-    mapQuery
+    destinationLabel || mapQuery
   )}`;
 
   return (
@@ -283,6 +291,15 @@ export default async function VendorPage({ params, searchParams }: Props) {
                 Open in Google Maps
                 <FiArrowRight className="ml-2 w-4 h-4" />
               </a>
+
+              {customerData.about_us && (
+                <div className="mt-6 pt-5 border-t border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">About</h3>
+                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+                    {customerData.about_us}
+                  </p>
+                </div>
+              )}
             </div>
             <div className="relative min-h-[260px] lg:min-h-[320px] border-t lg:border-t-0 lg:border-l border-gray-200">
               <iframe
@@ -299,18 +316,6 @@ export default async function VendorPage({ params, searchParams }: Props) {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
-        {/* About Section */}
-        {customerData.about_us && (
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">About Us</h2>
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-                {customerData.about_us}
-              </p>
-            </div>
-          </section>
-        )}
-
         {/* Activities Section */}
         <section className="space-y-8">
           <div className="text-center">
