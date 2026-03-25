@@ -33,25 +33,25 @@ export default function AboutPage() {
     {
       title: "Skiing",
       description:
-        "Discover ski resorts across Canada and book with confidence. From beginner-friendly runs to advanced terrain, it is easy to find a slope that fits your day.",
+        "Discover ski resorts across Canada and book with confidence. From beginner-friendly runs to advanced terrain, it is easy to find a slope that fits your day. Compare amenities, lesson options, and trail difficulty before confirming your perfect booking.",
       image: IMG.ski,
     },
     {
       title: "Ice Skating",
       description:
-        "Find indoor and outdoor skating rings across Canada, from city favorites to scenic winter trails. Book quickly and get on the ice sooner.",
+        "Find indoor and outdoor skating rings across Canada, from city favorites to scenic winter trails. Book quickly and get on the ice sooner. Check session times, rink features, and family-friendly options to plan a smoother outing.",
       image: IMG.skating,
     },
     {
       title: "Snowboarding",
       description:
-        "Explore snowboard-friendly resorts with terrain parks, groomed runs, and options for every skill level. Plan your trip in minutes.",
+        "Explore snowboard-friendly resorts with terrain parks, groomed runs, and options for every skill level. Plan your trip in minutes. Discover freestyle zones, lift access details, and beginner-friendly areas in one place.",
       image: IMG.snowboard,
     },
     {
       title: "Tubing",
       description:
-        "Book family-friendly tubing sessions at winter parks and resorts. No experience needed, just pick a time and enjoy the ride.",
+        "Book family-friendly tubing sessions at winter parks and resorts. No experience needed, just pick a time and enjoy the ride. Find age guidance, hill conditions, and group-friendly slots for hassle-free winter fun.",
       image: IMG.tubing,
     },
   ];
@@ -114,15 +114,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission & Vision — text LEFT, image RIGHT */}
+      {/* Mission & Vision */}
       <section className="bg-white border-y border-slate-200 py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4">
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-8">
               Mission &amp; Vision
             </h2>
-            <div className="space-y-6">
-              <div className="flex gap-4 p-5 rounded-2xl bg-sky-50 border border-sky-100">
+            <div className="grid grid-cols-2 gap-4 md:gap-6">
+              <div className="flex gap-4 p-5 rounded-2xl bg-sky-50 border border-sky-100 h-full">
                 <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-sky-600 flex items-center justify-center">
                   <FiTarget className="w-6 h-6 text-white" />
                 </div>
@@ -134,7 +134,7 @@ export default function AboutPage() {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-200">
+              <div className="flex gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-200 h-full">
                 <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-700 flex items-center justify-center">
                   <FiArrowRight className="w-6 h-6 text-white" />
                 </div>
@@ -147,15 +147,6 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl mt-10 md:mt-12">
-            <Image
-              src={IMG.ski}
-              alt="Skiing in the mountains"
-              fill
-              className="object-cover"
-              sizes="100vw"
-            />
           </div>
         </div>
       </section>
