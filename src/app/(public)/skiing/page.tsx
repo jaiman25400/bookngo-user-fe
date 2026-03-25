@@ -37,6 +37,7 @@ const SkiingPage = () => {
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
   const hoveredAreaRef = useRef<SkiArea | null>(null);
   const [mobileView, setMobileView] = useState<"list" | "map">("list");
+  const initialFlyToUserDone = useRef(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -163,14 +164,23 @@ const SkiingPage = () => {
       positionOptions: { enableHighAccuracy: true },
       trackUserLocation: true,
       showUserHeading: false,
-      fitBoundsOptions: { maxZoom: 16 },
+      fitBoundsOptions: { maxZoom: 8 },
     });
     geolocate.on("geolocate", (e: GeolocationPosition) => {
+      if (initialFlyToUserDone.current) return;
+      initialFlyToUserDone.current = true;
       const { longitude, latitude } = e.coords;
       // Run after control's own fit so we override and zoom in close
-      setTimeout(() => flyToUserLocation(longitude, latitude), 100);
+      setTimeout(() => flyToUserLocation(longitude, latitude), 150);
     });
     map.current.addControl(geolocate, "top-right");
+
+    // Automatically request and fly to user location once shortly after load
+    setTimeout(() => {
+      if (geolocate && typeof window !== "undefined") {
+        geolocate.trigger();
+      }
+    }, 800);
 
     const updateTooltipPosition = () => {
       if (hoveredAreaRef.current && map.current) {
@@ -227,6 +237,7 @@ const SkiingPage = () => {
       markersRef.current = [];
       map.current?.remove();
       map.current = null;
+      initialFlyToUserDone.current = false;
       setMapLoaded(false);
     };
   }, [skiAreas, router]);

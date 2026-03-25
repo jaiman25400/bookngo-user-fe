@@ -10,7 +10,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import {
   FiClock,
-  FiDollarSign,
   FiUsers,
   FiArrowLeft,
   FiAlertCircle,
@@ -103,6 +102,28 @@ export default async function ActivityPage({ params, searchParams }: Props) {
       )
     : [];
 
+  const dataRecord = data as unknown as Record<string, unknown>;
+  const firstText = (...values: Array<string | null | undefined>) =>
+    values.find((value) => typeof value === "string" && value.trim().length > 0)
+      ?.trim() ?? null;
+  const fromKey = (key: string) => {
+    const value = dataRecord[key];
+    return typeof value === "string" ? value : null;
+  };
+
+  const activityTagline = firstText(
+    fromKey("activity_tagline"),
+    fromKey("tagline"),
+    fromKey("short_description")
+  );
+  const activityMoreInfo = firstText(
+    fromKey("additional_info"),
+    fromKey("more_info"),
+    fromKey("activity_notes"),
+    fromKey("what_to_expect"),
+    fromKey("included_items")
+  );
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -157,44 +178,28 @@ export default async function ActivityPage({ params, searchParams }: Props) {
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Image Gallery */}
-            {images.length > 0 ? (
-              <ImageGallery images={images} activityName={data.activity_name} />
-            ) : (
-              <div className="relative aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
-                <FiInfo className="w-16 h-16 text-gray-400" />
-              </div>
-            )}
-
-            {/* Title and Key Info */}
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
-                {data.activity_name}
-              </h1>
-
-              {/* Key Info Badges */}
-              <div className="flex flex-wrap gap-4">
-                <div className="inline-flex items-center px-4 py-2 bg-sky-50 text-sky-700 rounded-lg border border-sky-200">
-                  <FiDollarSign className="w-5 h-5 mr-2" />
-                  <span className="font-semibold">
-                    ${parseFloat(data.base_price).toFixed(2)}
-                  </span>
+            <div className="relative">
+              {images.length > 0 ? (
+                <ImageGallery images={images} activityName={data.activity_name} />
+              ) : (
+                <div className="relative aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
+                  <FiInfo className="w-16 h-16 text-gray-400" />
                 </div>
-                {data.duration_hours && (
-                  <div className="inline-flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-lg border border-gray-200">
-                    <FiClock className="w-5 h-5 mr-2" />
-                    <span className="font-medium">
-                      {typeof data.duration_hours === "string"
-                        ? data.duration_hours
-                        : `${data.duration_hours} hours`}
-                    </span>
-                  </div>
-                )}
-                {data.age_group && (
-                  <div className="inline-flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-lg border border-gray-200">
-                    <FiUsers className="w-5 h-5 mr-2" />
-                    <span className="font-medium">{data.age_group}</span>
-                  </div>
-                )}
+              )}
+              <div className="absolute left-4 right-4 bottom-4 sm:left-6 sm:right-6 sm:bottom-6 z-10">
+                <div className="rounded-2xl border border-white/20 bg-black/45 text-white backdrop-blur-md p-4 sm:p-5">
+                  <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
+                    {data.activity_name}
+                  </h1>
+                  <p className="text-sm sm:text-base text-white/90 mt-1">
+                    {vendorDetail.replace(/-/g, " ")}
+                  </p>
+                  {activityTagline && (
+                    <p className="text-sm sm:text-base text-white/90 mt-2">
+                      {activityTagline}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -226,6 +231,18 @@ export default async function ActivityPage({ params, searchParams }: Props) {
                     </p>
                   </div>
                 </div>
+              </section>
+            )}
+
+            {/* More Info */}
+            {activityMoreInfo && (
+              <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  More Information
+                </h2>
+                <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+                  {activityMoreInfo}
+                </p>
               </section>
             )}
 
