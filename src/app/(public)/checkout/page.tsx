@@ -58,6 +58,8 @@ interface BookingData {
   activity_base_price: string;
   activityId: string;
   costBreakdown?: BookingCosts;
+  /** From getBookingDetailByID when admission was free (base_price ≤ 0). */
+  freeAdmission?: boolean;
 }
 
 export default function PaymentPage() {
@@ -160,7 +162,8 @@ export default function PaymentPage() {
   };
 
   const admissionFree = booking
-    ? isFreeAdmissionActivity(booking.activity_base_price)
+    ? Boolean(booking.freeAdmission) ||
+      isFreeAdmissionActivity(booking.activity_base_price)
     : false;
 
   // Loading state
