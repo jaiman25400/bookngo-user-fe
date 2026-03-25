@@ -36,7 +36,7 @@ const SkiingPage = () => {
   const [hoveredArea, setHoveredArea] = useState<SkiArea | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState<{ x: number; y: number } | null>(null);
   const hoveredAreaRef = useRef<SkiArea | null>(null);
-  const [showMobileMap, setShowMobileMap] = useState(false);
+  const [mobileView, setMobileView] = useState<"list" | "map">("list");
 
   useEffect(() => {
     const loadData = async () => {
@@ -231,13 +231,22 @@ const SkiingPage = () => {
     };
   }, [skiAreas, router]);
 
+  // Resize map after switching to mobile map view
+  useEffect(() => {
+    if (mobileView !== "map" || !map.current) return;
+    const t = setTimeout(() => {
+      map.current?.resize();
+    }, 100);
+    return () => clearTimeout(t);
+  }, [mobileView]);
+
   // List item click: fly to location and highlight (do not redirect)
   const handleAreaClick = useCallback((area: SkiArea) => {
     setSelectedArea(area);
 
-    // On mobile, open the map overlay when a resort is selected
+    // On mobile, switch to map view when a resort is selected
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
-      setShowMobileMap(true);
+      setMobileView("map");
     }
 
     if (map.current) {
@@ -303,11 +312,12 @@ const SkiingPage = () => {
   }
 
   return (
-    <div className="flex h-screen bg-slate-50 flex-col lg:flex-row overflow-hidden">
-      {/* Left Panel */}
-      <div className="w-full lg:w-[480px] xl:w-[540px] h-full flex flex-col bg-white border-r border-slate-200 shadow-xl flex-shrink-0">
-        {/* Header */}
-        <div className="p-6 pb-5 border-b border-slate-100 bg-gradient-to-br from-sky-500 to-blue-600">
+    <div className="flex min-h-screen lg:h-screen bg-slate-50 flex-col lg:flex-row lg:overflow-hidden">
+      {/* Left column: header + list (wrapper uses contents on mobile so map can sit between them via order) */}
+      <div className="contents lg:flex lg:flex-col lg:w-[480px] xl:w-[540px] lg:h-full lg:flex-shrink-0 lg:bg-white lg:border-r lg:border-slate-200 lg:shadow-xl">
+        {/* Header + search + toggle */}
+        <div className="order-1 lg:order-1 w-full bg-white border-r border-slate-200 shadow-xl lg:shadow-none flex flex-col flex-shrink-0">
+          <div className="p-6 pb-5 border-b border-slate-100 bg-gradient-to-br from-sky-500 to-blue-600">
           <div className="flex items-center gap-3 mb-1">
             <span className="text-sky-100 font-semibold text-sm uppercase tracking-wider">Ski & Snow</span>
           </div>
@@ -317,10 +327,10 @@ const SkiingPage = () => {
           <p className="text-white/90 mt-2 text-sm">
             {skiAreas.length} resort{skiAreas.length !== 1 ? "s" : ""} across Canada — hover ski icons for details, click to visit
           </p>
-        </div>
+          </div>
 
-        {/* Search */}
-        <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+          {/* Search */}
+          <div className="p-4 border-b border-slate-100 bg-slate-50/50">
           <div className="relative group">
             <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-sky-500 transition-colors" />
             <input
@@ -345,25 +355,39 @@ const SkiingPage = () => {
             </p>
           )}
 
-          {/* Mobile map toggle */}
+          {/* Mobile view toggle */}
           <div className="mt-3 flex items-center justify-between lg:hidden">
-            <p className="text-xs text-slate-500">
-              Tap a resort to highlight it on the map.
-            </p>
-            {process.env.NEXT_PUBLIC_MAPBOX_TOKEN && (
+            <div className="inline-flex rounded-full bg-slate-100 p-1">
               <button
                 type="button"
-                onClick={() => setShowMobileMap(true)}
-                className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-sky-600 text-white shadow-sm hover:bg-sky-700 transition-colors"
+                onClick={() => setMobileView("list")}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  mobileView === "list"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
               >
-                View map
+                List view
               </button>
-            )}
+              <button
+                type="button"
+                onClick={() => setMobileView("map")}
+                className={`px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
+                  mobileView === "map"
+                    ? "bg-white text-slate-900 shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+                disabled={!process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+              >
+                Map view
+              </button>
+            </div>
           </div>
+        </div>
         </div>
 
         {/* List */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+        <div className="order-3 lg:order-2 flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar bg-white min-h-0">
           {filteredAreas.length > 0 ? (
             <div className="p-4 space-y-4">
               {filteredAreas.map((area) => {
@@ -445,19 +469,17 @@ const SkiingPage = () => {
         </div>
       </div>
 
-      {/* Map Panel */}
+      {/* Single map container: order-2 on mobile, right column on desktop */}
       <div
-        className={
-          showMobileMap
-            ? "fixed inset-0 z-40 lg:static lg:flex-1 lg:relative bg-slate-900/80 lg:bg-transparent"
-            : "hidden lg:block lg:flex-1 lg:relative"
-        }
+        className={`order-2 min-h-[280px] px-4 py-4 lg:px-0 lg:py-0 lg:min-h-0 lg:flex-1 lg:relative ${
+          mobileView === "map" ? "block" : "hidden lg:!block"
+        }`}
       >
-        <div
-          ref={mapContainer}
-          className="w-full h-full rounded-none lg:rounded-l-2xl border-0 lg:border-l-4 border-sky-200 shadow-inner bg-slate-200"
-          style={{ minHeight: "400px" }}
-        />
+        <div className="h-full min-h-[256px] lg:min-h-0 rounded-2xl overflow-hidden border border-sky-200 shadow-md bg-slate-100 lg:rounded-none lg:border-0 lg:border-l-4 lg:shadow-inner relative">
+          <div
+            ref={mapContainer}
+            className="w-full h-full min-h-[256px] lg:min-h-0 bg-slate-200"
+          />
         {process.env.NEXT_PUBLIC_MAPBOX_TOKEN && mapLoaded && (
           <div className="absolute inset-0 pointer-events-none rounded-none lg:rounded-l-2xl">
             {hoveredArea && tooltipPosition && (
@@ -496,18 +518,7 @@ const SkiingPage = () => {
             </div>
           </div>
         )}
-
-        {/* Mobile close button for map overlay */}
-        {showMobileMap && (
-          <button
-            type="button"
-            onClick={() => setShowMobileMap(false)}
-            className="absolute top-4 right-4 z-50 inline-flex items-center justify-center w-9 h-9 rounded-full bg-white text-slate-800 shadow-md border border-slate-200 lg:hidden"
-            aria-label="Close map"
-          >
-            <FiX className="w-5 h-5" />
-          </button>
-        )}
+        </div>
       </div>
 
       <style jsx global>{`
