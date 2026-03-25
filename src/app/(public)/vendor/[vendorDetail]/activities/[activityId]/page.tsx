@@ -20,6 +20,10 @@ import {
 } from "react-icons/fi";
 import ImageGallery from "./ImageGallery";
 import type { ActivitySchedule } from "./vendorActivityApi";
+import {
+  formatActivityPriceDisplay,
+  isFreeAdmissionActivity,
+} from "../../../../lib/activityPricing";
 
 export const revalidate = 600; // Revalidate every 10 minutes
 
@@ -116,6 +120,8 @@ export default async function ActivityPage({ params, searchParams }: Props) {
     fromKey("tagline"),
     fromKey("short_description")
   );
+  const freeAdmission = isFreeAdmissionActivity(data.base_price);
+
   const activityMoreInfo = firstText(
     fromKey("additional_info"),
     fromKey("more_info"),
@@ -275,8 +281,14 @@ export default async function ActivityPage({ params, searchParams }: Props) {
                 <div className="text-center pb-6 border-b border-gray-200">
                   <p className="text-sm text-gray-600 mb-2">Starting from</p>
                   <p className="text-4xl font-bold text-gray-900">
-                    ${parseFloat(data.base_price).toFixed(2)}
+                    {formatActivityPriceDisplay(data.base_price)}
                   </p>
+                  {freeAdmission && (
+                    <p className="text-sm text-gray-600 mt-3 leading-snug">
+                      Public access is free. Use the button below to reserve
+                      rental equipment (skates, etc.) for your visit.
+                    </p>
+                  )}
                 </div>
 
                 {/* Quick Info */}
@@ -346,7 +358,9 @@ export default async function ActivityPage({ params, searchParams }: Props) {
                     className="block w-full"
                   >
                     <button className="w-full bg-sky-600 hover:bg-sky-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 flex items-center justify-center">
-                      <span>Book Now</span>
+                      <span>
+                        {freeAdmission ? "Book rentals" : "Book Now"}
+                      </span>
                     </button>
                   </Link>
                 )}

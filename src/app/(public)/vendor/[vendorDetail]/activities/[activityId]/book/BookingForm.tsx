@@ -7,6 +7,8 @@ import { FiUser, FiMail, FiPhone, FiShoppingCart, FiAlertCircle } from "react-ic
 interface BookingFormProps {
   activityId: string;
   vendorSlug: string;
+  /** When true, activity admission is free; tickets field is hidden and stored as 0. */
+  freeAdmission?: boolean;
 }
 
 interface FormData {
@@ -27,13 +29,14 @@ interface FormErrors {
 export default function BookingForm({
   activityId,
   vendorSlug,
+  freeAdmission = false,
 }: BookingFormProps) {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     phone: "",
-    tickets: 1,
+    tickets: freeAdmission ? 0 : 1,
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,9 +71,11 @@ export default function BookingForm({
       }
     }
 
-    // Tickets validation
-    if (formData.tickets < 1 || formData.tickets > 20) {
-      newErrors.tickets = "Number of tickets must be between 1 and 20";
+    // Tickets validation (skipped for free-admission activities)
+    if (!freeAdmission) {
+      if (formData.tickets < 1 || formData.tickets > 20) {
+        newErrors.tickets = "Number of tickets must be between 1 and 20";
+      }
     }
 
     setErrors(newErrors);
@@ -102,6 +107,8 @@ export default function BookingForm({
     try {
       const bookingDetails = {
         ...formData,
+        tickets: freeAdmission ? 0 : formData.tickets,
+        freeAdmission,
         activityId,
         vendorSlug,
       };
@@ -224,40 +231,42 @@ export default function BookingForm({
         )}
       </div>
 
-      {/* Tickets Field */}
-      <div>
-        <label
-          htmlFor="tickets"
-          className="block text-sm font-semibold text-gray-700 mb-2"
-        >
-          <FiShoppingCart className="inline-block w-4 h-4 mr-2" />
-          Number of Tickets
-        </label>
-        <input
-          type="number"
-          id="tickets"
-          name="tickets"
-          min="1"
-          max="20"
-          value={formData.tickets}
-          onChange={handleChange}
-          required
-          className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors ${
-            errors.tickets
-              ? "border-red-300 bg-red-50"
-              : "border-gray-300 hover:border-gray-400"
-          }`}
-        />
-        {errors.tickets && (
-          <p className="mt-1 text-sm text-red-600 flex items-center">
-            <FiAlertCircle className="w-4 h-4 mr-1" />
-            {errors.tickets}
+      {/* Tickets — hidden when admission is free (rentals chosen later) */}
+      {!freeAdmission && (
+        <div>
+          <label
+            htmlFor="tickets"
+            className="block text-sm font-semibold text-gray-700 mb-2"
+          >
+            <FiShoppingCart className="inline-block w-4 h-4 mr-2" />
+            Number of Tickets
+          </label>
+          <input
+            type="number"
+            id="tickets"
+            name="tickets"
+            min="1"
+            max="20"
+            value={formData.tickets}
+            onChange={handleChange}
+            required
+            className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-colors ${
+              errors.tickets
+                ? "border-red-300 bg-red-50"
+                : "border-gray-300 hover:border-gray-400"
+            }`}
+          />
+          {errors.tickets && (
+            <p className="mt-1 text-sm text-red-600 flex items-center">
+              <FiAlertCircle className="w-4 h-4 mr-1" />
+              {errors.tickets}
+            </p>
+          )}
+          <p className="mt-1 text-xs text-gray-500">
+            Maximum 20 tickets per booking
           </p>
-        )}
-        <p className="mt-1 text-xs text-gray-500">
-          Maximum 20 tickets per booking
-        </p>
-      </div>
+        </div>
+      )}
 
       {/* Submit Error */}
       {errors.submit && (
@@ -299,6 +308,8 @@ export default function BookingForm({
             </svg>
             Processing...
           </>
+        ) : freeAdmission ? (
+          "Continue to rental booking"
         ) : (
           "Continue to Booking Details"
         )}

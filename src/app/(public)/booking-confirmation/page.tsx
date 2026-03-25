@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apiImageUrl } from "../lib/apiImageUrl";
 import {
   fetchActivityDetailsUsingNonOfTickets,
@@ -34,6 +34,7 @@ import {
 } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { isFreeAdmissionActivity } from "../lib/activityPricing";
 
 type Booking = {
   name: string;
@@ -42,6 +43,8 @@ type Booking = {
   tickets: number;
   activityId: string;
   vendorSlug: string;
+  /** From booking form when activity admission is free */
+  freeAdmission?: boolean;
 };
 
 type ActivitySchedule = {
@@ -69,6 +72,8 @@ type ActivityZone = {
 type ActivityData = {
   slot_interval_minutes: number;
   activity_name: string;
+  /** Admission price; "0" or 0 means free public activity (rentals sold separately). */
+  base_price?: string | number;
   holidays: { date: string }[];
   schedules: ActivitySchedule[];
   start_date: string;
@@ -92,6 +97,30 @@ type ProceedToCheckoutApi = {
 interface SlotInfo {
   slotTime: string;
   availableTickets: number;
+  /** When API sends rental capacity per slot (preferred for free-admission activities). */
+  availableRentals?: number;
+}
+
+function slotCapacity(slot: SlotInfo): number {
+  if (
+    typeof slot.availableRentals === "number" &&
+    Number.isFinite(slot.availableRentals)
+  ) {
+    return Math.max(0, slot.availableRentals);
+  }
+  if (
+    typeof slot.availableTickets === "number" &&
+    Number.isFinite(slot.availableTickets)
+  ) {
+    return Math.max(0, slot.availableTickets);
+  }
+  return 0;
+}
+
+function formatZonePriceLabel(price: string): string {
+  const n = Number.parseFloat(String(price).replace(/[^0-9.-]/g, ""));
+  if (!Number.isFinite(n) || n <= 0) return "Free";
+  return `$${n.toFixed(2)}`;
 }
 
 type RentalSelection = {
@@ -131,6 +160,20 @@ export default function BookingConfirmationPage() {
 
   const router = useRouter();
 
+  const isFreeActivity = useMemo(() => {
+    if (activity != null) {
+      return isFreeAdmissionActivity(activity.base_price);
+    }
+    return Boolean(booking?.freeAdmission);
+  }, [activity, booking?.freeAdmission]);
+
+  const ticketCountForSlots = useMemo(() => {
+    if (isFreeActivity) return 0;
+    const t = booking?.tickets;
+    if (typeof t === "number" && t >= 1) return t;
+    return 1;
+  }, [isFreeActivity, booking?.tickets]);
+
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -140,8 +183,30 @@ export default function BookingConfirmationPage() {
 
       if (sessionData) {
         try {
-          const parsed = JSON.parse(sessionData);
-          setBooking(parsed);
+          const parsed = JSON.parse(sessionData) as Record<string, unknown>;
+          if (!parsed || typeof parsed !== "object") {
+            throw new Error("Invalid shape");
+          }
+          const ticketsRaw = parsed.tickets;
+          let tickets =
+            typeof ticketsRaw === "number" && Number.isFinite(ticketsRaw)
+              ? ticketsRaw
+              : Number.parseInt(String(ticketsRaw ?? ""), 10);
+          if (!Number.isFinite(tickets)) {
+            tickets = parsed.freeAdmission ? 0 : 1;
+          }
+          if (!parsed.freeAdmission && tickets < 1) {
+            tickets = 1;
+          }
+          setBooking({
+            name: String(parsed.name ?? ""),
+            email: String(parsed.email ?? ""),
+            phone: String(parsed.phone ?? ""),
+            tickets,
+            activityId: String(parsed.activityId ?? ""),
+            vendorSlug: String(parsed.vendorSlug ?? ""),
+            freeAdmission: Boolean(parsed.freeAdmission),
+          });
           sessionStorage.removeItem("booking-data");
           setBookingResolved(true);
           return;
@@ -161,7 +226,30 @@ export default function BookingConfirmationPage() {
 
       if (cookieValue) {
         try {
-          setBooking(JSON.parse(decodeURIComponent(cookieValue)));
+          const parsed = JSON.parse(decodeURIComponent(cookieValue)) as Record<
+            string,
+            unknown
+          >;
+          const ticketsRaw = parsed.tickets;
+          let tickets =
+            typeof ticketsRaw === "number" && Number.isFinite(ticketsRaw)
+              ? ticketsRaw
+              : Number.parseInt(String(ticketsRaw ?? ""), 10);
+          if (!Number.isFinite(tickets)) {
+            tickets = parsed.freeAdmission ? 0 : 1;
+          }
+          if (!parsed.freeAdmission && tickets < 1) {
+            tickets = 1;
+          }
+          setBooking({
+            name: String(parsed.name ?? ""),
+            email: String(parsed.email ?? ""),
+            phone: String(parsed.phone ?? ""),
+            tickets,
+            activityId: String(parsed.activityId ?? ""),
+            vendorSlug: String(parsed.vendorSlug ?? ""),
+            freeAdmission: Boolean(parsed.freeAdmission),
+          });
         } catch {
           setError("Invalid booking data. Please start over.");
           setLoading(false);
@@ -202,22 +290,28 @@ export default function BookingConfirmationPage() {
 
         if (response.data) {
           setActivity(response.data);
-          setProvidesRentals(response.data.provides_rentals);
+          setProvidesRentals(Boolean(response.data.provides_rentals));
 
-          // Filter active zones
-          const filteredZones = response.data.zones.filter(
-            (zone: ActivityZone) => zone.status === "active"
+          const zones = Array.isArray(response.data.zones)
+            ? response.data.zones
+            : [];
+          const filteredZones = zones.filter(
+            (zone: ActivityZone) => zone?.status === "active"
           );
           setActiveZones(filteredZones);
 
-          // Process specific holiday dates
-          const holidayDates = response.data.holidays.map(
-            (h: { date: string }) => parseISO(h.date)
-          );
+          const holidays = Array.isArray(response.data.holidays)
+            ? response.data.holidays
+            : [];
+          const holidayDates = holidays
+            .filter((h: { date?: string }) => h?.date)
+            .map((h: { date: string }) => parseISO(h.date));
           setExcludedDates(holidayDates);
 
-          // Process recurring weekly holidays from schedule
-          const weeklyHolidays = response.data.schedules
+          const schedules = Array.isArray(response.data.schedules)
+            ? response.data.schedules
+            : [];
+          const weeklyHolidays = schedules
             .filter((schedule: ActivitySchedule) => schedule.is_holiday)
             .map((schedule: ActivitySchedule) => schedule.day);
           setHolidayDays(weeklyHolidays);
@@ -264,11 +358,12 @@ export default function BookingConfirmationPage() {
         }
 
         if (response.data?.success) {
-          setAvailableSlots(response.data.data?.slots || []);
+          const raw = response.data.data?.slots;
+          setAvailableSlots(Array.isArray(raw) ? raw : []);
         } else {
           setAvailableSlots([]);
         }
-        } catch {
+      } catch {
           setSlotError(
             "Failed to fetch available slots. Please try selecting another date."
           );
@@ -340,6 +435,11 @@ export default function BookingConfirmationPage() {
       return;
     }
 
+    if (!isFreeActivity && ticketCountForSlots < 1) {
+      setSubmitError("Invalid ticket count. Please go back and choose at least one ticket.");
+      return;
+    }
+
     setSubmitting(true);
     setSubmitError(null);
 
@@ -352,7 +452,7 @@ export default function BookingConfirmationPage() {
         },
         activityId: booking.activityId,
         vendorSlug: booking.vendorSlug,
-        tickets: booking.tickets,
+        tickets: isFreeActivity ? 0 : ticketCountForSlots,
         date: selectedDate.toISOString().split("T")[0],
         time: selectedTime,
         zoneId: selectedZone.id,
@@ -476,7 +576,9 @@ export default function BookingConfirmationPage() {
           </h1>
           <div className="mt-3 max-w-md mx-auto">
             <p className="text-gray-600 text-lg">
-              Finalize your activity details and select preferred options
+              {isFreeActivity
+                ? "Pick a date and time for your rental. Skating is free; you only pay for equipment you add."
+                : "Finalize your activity details and select preferred options"}
             </p>
             <div className="mt-4 h-1 w-20 bg-sky-600 rounded-full mx-auto"></div>
           </div>
@@ -540,7 +642,21 @@ export default function BookingConfirmationPage() {
               </h3>
               <ul className="space-y-3">
                 {[
-                  { label: "Tickets", value: booking.tickets, icon: FiBook },
+                  ...(isFreeActivity
+                    ? [
+                        {
+                          label: "Booking",
+                          value: "Free activity — rental equipment",
+                          icon: FiShoppingBag,
+                        },
+                      ]
+                    : [
+                        {
+                          label: "Tickets",
+                          value: String(booking.tickets),
+                          icon: FiBook,
+                        },
+                      ]),
                   {
                     label: "Activity",
                     value: activity?.activity_name || booking.activityId,
@@ -548,7 +664,7 @@ export default function BookingConfirmationPage() {
                   },
                   {
                     label: "Vendor",
-                    value: booking.vendorSlug,
+                    value: booking.vendorSlug.replace(/-/g, " "),
                     icon: FiShoppingBag,
                   },
                 ].map((item, idx) => (
@@ -570,7 +686,9 @@ export default function BookingConfirmationPage() {
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl md:text-2xl font-semibold text-gray-900 flex items-center">
               <FiCalendar className="mr-2 text-sky-600" />
-              Select Date & Time
+              {isFreeActivity
+                ? "Select date & time for rentals"
+                : "Select Date & Time"}
             </h2>
           </div>
 
@@ -640,11 +758,23 @@ export default function BookingConfirmationPage() {
                 </div>
               ) : availableSlots.length > 0 ? (
                 <div className="mt-5">
+                  {isFreeActivity && (
+                    <p className="text-sm text-gray-600 mb-3 rounded-lg bg-sky-50 border border-sky-100 px-3 py-2">
+                      Each time shows how many{" "}
+                      <span className="font-semibold text-gray-800">
+                        rental spots
+                      </span>{" "}
+                      are open for that window. Admission to the rink is free;
+                      you&apos;ll add skates or gear in the next step.
+                    </p>
+                  )}
                   <label
                     htmlFor="time"
                     className="block text-sm font-semibold text-gray-700 mb-2"
                   >
-                    Select time slot
+                    {isFreeActivity
+                      ? "Select time (rental availability)"
+                      : "Select time slot"}
                   </label>
                   <div className="relative">
                     <select
@@ -654,11 +784,15 @@ export default function BookingConfirmationPage() {
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 appearance-none hover:border-gray-400 transition-colors bg-white"
                     >
                       <option value="" disabled>
-                        Choose a time slot
+                        {isFreeActivity
+                          ? "Choose a time for your rental"
+                          : "Choose a time slot"}
                       </option>
                       {availableSlots.map((slot) => {
-                        const isDisabled =
-                          slot.availableTickets < (booking?.tickets || 0);
+                        const cap = slotCapacity(slot);
+                        const isDisabled = isFreeActivity
+                          ? cap < 1
+                          : cap < ticketCountForSlots;
                         return (
                           <option
                             key={slot.slotTime}
@@ -666,9 +800,13 @@ export default function BookingConfirmationPage() {
                             disabled={isDisabled}
                           >
                             {slot.slotTime.substring(0, 5)}
-                            {isDisabled
-                              ? ` - Only ${slot.availableTickets} ticket${slot.availableTickets !== 1 ? "s" : ""} available`
-                              : ` - ${slot.availableTickets} ticket${slot.availableTickets !== 1 ? "s" : ""} available`}
+                            {isFreeActivity
+                              ? isDisabled
+                                ? " — No rentals available"
+                                : ` — ${cap} rental${cap !== 1 ? "s" : ""} available`
+                              : isDisabled
+                                ? ` - Only ${cap} ticket${cap !== 1 ? "s" : ""} available`
+                                : ` - ${cap} ticket${cap !== 1 ? "s" : ""} available`}
                           </option>
                         );
                       })}
@@ -734,7 +872,9 @@ export default function BookingConfirmationPage() {
                       <div className="flex-grow">
                         <div className="flex justify-between items-start mb-2">
                           <h4 className="font-semibold text-gray-900">{zone.name}</h4>
-                          <span className="font-bold text-gray-900">${zone.price}</span>
+                          <span className="font-bold text-gray-900">
+                            {formatZonePriceLabel(zone.price)}
+                          </span>
                         </div>
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                           {zone.description}
@@ -802,7 +942,9 @@ export default function BookingConfirmationPage() {
                     <span className="bg-white text-gray-800 text-sm px-2.5 py-1 rounded border border-sky-200">
                       Capacity: {selectedZone.capacity}
                     </span>
-                    <span className="font-semibold text-gray-900">${selectedZone.price}</span>
+                    <span className="font-semibold text-gray-900">
+                      {formatZonePriceLabel(selectedZone.price)}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -821,7 +963,9 @@ export default function BookingConfirmationPage() {
                 </h3>
                 <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
                   <p className="text-gray-700 mb-4 text-center">
-                    Would you like to add rental equipment to your booking?
+                    {isFreeActivity
+                      ? "Skating is free. Reserve rental skates or equipment for your visit, or continue if you already have your own."
+                      : "Would you like to add rental equipment to your booking?"}
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-3">
                     <button
@@ -836,7 +980,9 @@ export default function BookingConfirmationPage() {
                       className="flex-1 max-w-xs bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 font-medium py-3 px-4 rounded-lg transition-all hover:shadow-md flex items-center justify-center"
                     >
                       <FiArrowRight className="mr-2" />
-                      Continue Without Rentals
+                      {isFreeActivity
+                        ? "I have my own equipment"
+                        : "Continue Without Rentals"}
                     </button>
                   </div>
                 </div>

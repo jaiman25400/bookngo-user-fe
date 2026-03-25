@@ -12,6 +12,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { FiArrowLeft, FiDollarSign, FiClock, FiUsers, FiExternalLink } from "react-icons/fi";
+import {
+  formatActivityPriceDisplay,
+  isFreeAdmissionActivity,
+} from "../../../../../lib/activityPricing";
 
 type Props = {
   params: Promise<{
@@ -54,6 +58,8 @@ export default async function BookingPage({ params, searchParams }: Props) {
 
   const useExternalBooking =
     data.redirect_to_external_website && data.external_booking_url;
+
+  const freeAdmission = isFreeAdmissionActivity(data.base_price);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -151,13 +157,16 @@ export default async function BookingPage({ params, searchParams }: Props) {
                     Complete Your Booking
                   </h1>
                   <p className="text-gray-600">
-                    Please fill in your details to proceed with the booking
+                    {freeAdmission
+                      ? "This activity is free to enjoy. Enter your details to reserve rental equipment and pick a time."
+                      : "Please fill in your details to proceed with the booking"}
                   </p>
                 </div>
 
                 <BookingForm
                   activityId={activityId}
                   vendorSlug={vendorDetail}
+                  freeAdmission={freeAdmission}
                 />
               </div>
             )}
@@ -192,10 +201,10 @@ export default async function BookingPage({ params, searchParams }: Props) {
                   <div className="flex items-center justify-between">
                     <span className="text-gray-600 flex items-center text-sm">
                       <FiDollarSign className="w-4 h-4 mr-2 text-gray-400" />
-                      Price per ticket
+                      {freeAdmission ? "Activity admission" : "Price per ticket"}
                     </span>
                     <span className="font-semibold text-gray-900">
-                      ${parseFloat(data.base_price).toFixed(2)}
+                      {formatActivityPriceDisplay(data.base_price)}
                     </span>
                   </div>
                   {data.duration_hours && (
@@ -227,13 +236,17 @@ export default async function BookingPage({ params, searchParams }: Props) {
                 {/* Total Calculation Placeholder */}
                 <div className="bg-gray-50 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm text-gray-600">Subtotal</span>
+                    <span className="text-sm text-gray-600">
+                      {freeAdmission ? "Admission" : "Subtotal"}
+                    </span>
                     <span className="text-sm font-medium text-gray-900">
-                      ${parseFloat(data.base_price).toFixed(2)}
+                      {formatActivityPriceDisplay(data.base_price)}
                     </span>
                   </div>
                   <p className="text-xs text-gray-500 mt-2">
-                    Final price calculated after ticket selection
+                    {freeAdmission
+                      ? "Rental prices are set in the next step when you choose equipment."
+                      : "Final price calculated after ticket selection"}
                   </p>
                 </div>
               </div>

@@ -25,6 +25,10 @@ import {
   FiActivity,
 } from "react-icons/fi";
 import Link from "next/link";
+import {
+  formatActivityPriceDisplay,
+  isFreeAdmissionActivity,
+} from "../lib/activityPricing";
 
 interface BookingCosts {
   activityCost: number;
@@ -154,6 +158,10 @@ export default function PaymentPage() {
     tax: 0,
     total: 0,
   };
+
+  const admissionFree = booking
+    ? isFreeAdmissionActivity(booking.activity_base_price)
+    : false;
 
   // Loading state
   if (loading) {
@@ -322,11 +330,20 @@ export default function PaymentPage() {
                     <FiShoppingBag className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
                     <div>
                       <p className="font-medium text-gray-900">
-                        {booking.numberOfTickets}{" "}
-                        {booking.numberOfTickets === 1 ? "ticket" : "tickets"}
+                        {admissionFree
+                          ? "Free admission — rental booking"
+                          : `${booking.numberOfTickets} ${
+                              booking.numberOfTickets === 1
+                                ? "ticket"
+                                : "tickets"
+                            }`}
                       </p>
                       <p className="text-sm text-gray-600">
-                        ${parseFloat(booking.activity_base_price).toFixed(2)} per ticket
+                        {admissionFree
+                          ? "Activity is free; charges are for rentals only (if any)."
+                          : `${formatActivityPriceDisplay(
+                              booking.activity_base_price
+                            )} per ticket`}
                       </p>
                     </div>
                   </div>
@@ -525,9 +542,15 @@ export default function PaymentPage() {
                       </h3>
                       <div className="space-y-1">
                         <p className="text-gray-900 font-medium">
-                          {booking.numberOfTickets}{" "}
-                          {booking.numberOfTickets === 1 ? "ticket" : "tickets"} @
-                          ${parseFloat(booking.activity_base_price).toFixed(2)}
+                          {admissionFree
+                            ? "Free admission; rental equipment priced separately below"
+                            : `${booking.numberOfTickets} ${
+                                booking.numberOfTickets === 1
+                                  ? "ticket"
+                                  : "tickets"
+                              } @ ${formatActivityPriceDisplay(
+                                booking.activity_base_price
+                              )}`}
                         </p>
                         <p className="text-gray-600 text-sm">
                           Activity ID: {booking.activityId}
