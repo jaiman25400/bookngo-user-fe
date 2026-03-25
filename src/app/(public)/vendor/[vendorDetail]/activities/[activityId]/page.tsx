@@ -177,16 +177,23 @@ export default async function ActivityPage({ params, searchParams }: Props) {
         <div className="grid gap-8 lg:grid-cols-3">
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Image Gallery */}
-            <div className="relative">
+            {/* Image Gallery + title: mobile = compact strip on image + details below; md+ = full overlay card */}
+            <div className="relative overflow-hidden rounded-2xl">
               {images.length > 0 ? (
                 <ImageGallery images={images} activityName={data.activity_name} />
               ) : (
-                <div className="relative aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
+                <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-sky-100 to-blue-100 flex items-center justify-center">
                   <FiInfo className="w-16 h-16 text-gray-400" />
                 </div>
               )}
-              <div className="absolute left-4 right-4 bottom-4 sm:left-6 sm:right-6 sm:bottom-6 z-10">
+              {/* Mobile: thin gradient band + title only so the photo stays visible */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 md:hidden bg-gradient-to-t from-black/85 via-black/35 to-transparent pt-14 pb-3 px-4">
+                <h1 className="text-xl font-bold tracking-tight text-white drop-shadow-md line-clamp-2">
+                  {data.activity_name}
+                </h1>
+              </div>
+              {/* md+: full overlay card */}
+              <div className="absolute left-4 right-4 bottom-4 z-10 hidden md:block sm:left-6 sm:right-6 sm:bottom-6">
                 <div className="rounded-2xl border border-white/20 bg-black/45 text-white backdrop-blur-md p-4 sm:p-5">
                   <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
                     {data.activity_name}
@@ -201,6 +208,17 @@ export default async function ActivityPage({ params, searchParams }: Props) {
                   )}
                 </div>
               </div>
+            </div>
+            {/* Mobile: vendor + tagline below image */}
+            <div className="md:hidden mt-3 rounded-2xl border border-gray-200 bg-white px-4 py-4 shadow-sm">
+              <p className="text-sm font-medium text-gray-500 capitalize">
+                {vendorDetail.replace(/-/g, " ")}
+              </p>
+              {activityTagline && (
+                <p className="text-base text-gray-800 mt-2 leading-snug">
+                  {activityTagline}
+                </p>
+              )}
             </div>
 
             {/* Description */}
