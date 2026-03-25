@@ -117,47 +117,45 @@ export default function AboutPage() {
       {/* Mission & Vision — text LEFT, image RIGHT */}
       <section className="bg-white border-y border-slate-200 py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-8">
-                Mission &amp; Vision
-              </h2>
-              <div className="space-y-6">
-                <div className="flex gap-4 p-5 rounded-2xl bg-sky-50 border border-sky-100">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-sky-600 flex items-center justify-center">
-                    <FiTarget className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-1">Our Mission</h3>
-                    <p className="text-slate-600 text-sm">
-                      Help people discover and book great winter experiences
-                      quickly, clearly, and confidently.
-                    </p>
-                  </div>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-8">
+              Mission &amp; Vision
+            </h2>
+            <div className="space-y-6">
+              <div className="flex gap-4 p-5 rounded-2xl bg-sky-50 border border-sky-100">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-sky-600 flex items-center justify-center">
+                  <FiTarget className="w-6 h-6 text-white" />
                 </div>
-                <div className="flex gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-200">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-700 flex items-center justify-center">
-                    <FiArrowRight className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-1">Our Vision</h3>
-                    <p className="text-slate-600 text-sm">
-                      Be Canada&apos;s most trusted platform for planning winter
-                      activities from first search to final booking.
-                    </p>
-                  </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-800 mb-1">Our Mission</h3>
+                  <p className="text-slate-600 text-sm">
+                    Help people discover and book great winter experiences
+                    quickly, clearly, and confidently.
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-700 flex items-center justify-center">
+                  <FiArrowRight className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-800 mb-1">Our Vision</h3>
+                  <p className="text-slate-600 text-sm">
+                    Be Canada&apos;s most trusted platform for planning winter
+                    activities from first search to final booking.
+                  </p>
                 </div>
               </div>
             </div>
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src={IMG.ski}
-                alt="Skiing in the mountains"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </div>
+          </div>
+          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl mt-10 md:mt-12">
+            <Image
+              src={IMG.ski}
+              alt="Skiing in the mountains"
+              fill
+              className="object-cover"
+              sizes="100vw"
+            />
           </div>
         </div>
       </section>
