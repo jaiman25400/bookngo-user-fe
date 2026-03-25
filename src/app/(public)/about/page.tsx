@@ -121,7 +121,7 @@ export default function AboutPage() {
             <h2 className="text-2xl md:text-3xl font-bold text-slate-800 mb-8">
               Mission &amp; Vision
             </h2>
-            <div className="grid grid-cols-2 gap-4 md:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="flex gap-4 p-5 rounded-2xl bg-sky-50 border border-sky-100 h-full">
                 <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-sky-600 flex items-center justify-center">
                   <FiTarget className="w-6 h-6 text-white" />
