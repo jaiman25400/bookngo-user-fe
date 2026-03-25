@@ -4,6 +4,7 @@ import RegionsScroll from "../../components/RegionsScroll";
 import SkatingRegionsSection from "../../components/SkatingRegionsSection";
 import { FiArrowRight, FiMail, FiInfo, FiPhone } from "react-icons/fi";
 import NewsletterForm from "../../components/NewsletterForm";
+import HomeVendorSearch from "../../components/HomeVendorSearch";
 
 export default function HomePage() {
   return (
@@ -28,9 +29,12 @@ export default function HomePage() {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-5 leading-tight drop-shadow-lg tracking-tight">
               Book Your Winter Adventure
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-7 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
               Discover the best ski resorts and winter activities across Canada
             </p>
+            <div className="mb-7 sm:mb-8">
+              <HomeVendorSearch />
+            </div>
             <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
               <Link
                 href="/skiing"
