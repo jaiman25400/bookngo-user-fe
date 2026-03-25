@@ -229,38 +229,6 @@ export default async function ActivityPage({ params, searchParams }: Props) {
               </section>
             )}
 
-            {/* Weekly Schedule */}
-            {weeklySchedule.length > 0 && (
-              <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 md:p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-5">
-                  Weekly Schedule
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {weeklySchedule.map((slot) => (
-                    <div
-                      key={slot.id}
-                      className="rounded-xl border border-gray-200 bg-gray-50 p-4"
-                    >
-                      <div className="flex items-center justify-between">
-                        <p className="font-semibold text-gray-900">{slot.day}</p>
-                        {slot.is_holiday && (
-                          <span className="text-[11px] font-semibold uppercase tracking-wide bg-amber-100 text-amber-800 px-2 py-0.5 rounded">
-                            Holiday
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-gray-600 mt-1">
-                        {slot.is_24hours
-                          ? "Open 24 hours"
-                          : `${formatTime(slot.start_time)} - ${formatTime(
-                              slot.end_time
-                            )}`}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
           </div>
 
           {/* Sidebar */}
@@ -355,6 +323,41 @@ export default async function ActivityPage({ params, searchParams }: Props) {
                 </div>
               </div>
             </div>
+
+            {/* Weekly Schedule */}
+            {weeklySchedule.length > 0 && (
+              <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  Weekly Schedule
+                </h2>
+                <div className="space-y-2">
+                  {weeklySchedule.map((slot) => (
+                    <div
+                      key={slot.id}
+                      className="flex items-center justify-between rounded-lg border border-gray-200 bg-gray-50 px-3 py-2"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-gray-900">
+                          {slot.day}
+                        </p>
+                        <p className="text-xs text-gray-600 truncate">
+                          {slot.is_24hours
+                            ? "Open 24 hours"
+                            : `${formatTime(slot.start_time)} - ${formatTime(
+                                slot.end_time
+                              )}`}
+                        </p>
+                      </div>
+                      {slot.is_holiday && (
+                        <span className="ml-2 shrink-0 text-[10px] font-semibold uppercase tracking-wide bg-amber-100 text-amber-800 px-2 py-0.5 rounded">
+                          Holiday
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
         </div>
       </div>
