@@ -40,7 +40,7 @@ export default function SkatingRegionsSection() {
         Find ice skating by region
       </h2>
       <p className="text-slate-600 text-base mb-6">
-        Browse skating rings in your province
+        Browse skating rinks in your province
       </p>
 
       {/* Match reference style: compact horizontal cards with minimal chrome */}
@@ -51,7 +51,7 @@ export default function SkatingRegionsSection() {
               key={region.slug}
               href={`/skates/${region.slug}`}
               className="group relative flex-shrink-0 w-[84vw] sm:w-[68vw] md:w-[48vw] lg:w-[34vw] xl:w-[27vw] min-w-[260px] snap-start rounded-md overflow-hidden border border-slate-200 bg-white"
-              aria-label={`View skating rings in ${region.name}`}
+              aria-label={`View skating rinks in ${region.name}`}
             >
               <div className="relative h-40 sm:h-44 lg:h-48">
                 <Image

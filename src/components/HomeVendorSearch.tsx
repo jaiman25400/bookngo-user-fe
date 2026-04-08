@@ -165,7 +165,7 @@ export default function HomeVendorSearch() {
   );
 
   const kindLabel = (k: ListingFrom) =>
-    k === "skiing" ? "Ski resort" : "Skating ring";
+    k === "skiing" ? "Ski resort" : "Skating rink";
 
   return (
     <div ref={wrapRef} className="w-full max-w-xl mx-auto text-left">
@@ -206,7 +206,7 @@ export default function HomeVendorSearch() {
           </Link>{" "}
           or{" "}
           <Link href="/skates" className="underline font-medium text-white">
-            Skating rings
+            Skating rinks
           </Link>{" "}
           to browse.
         </p>
@@ -242,7 +242,7 @@ export default function HomeVendorSearch() {
                   href="/skates"
                   className="inline-flex items-center rounded-lg bg-white/15 hover:bg-white/25 px-3 py-2 text-xs font-semibold text-white transition-colors"
                 >
-                  All skating rings
+                  All skating rinks
                   <FiChevronRight className="ml-1 w-3.5 h-3.5" />
                 </Link>
               </div>

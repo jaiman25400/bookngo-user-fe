@@ -352,14 +352,14 @@ export default async function VendorPage({ params, searchParams }: Props) {
               </h3>
               <p className="text-gray-600 max-w-md mx-auto">
                 We&apos;re currently updating our activity offerings. Please check
-                back soon or explore other {listingFrom === "skates" ? "rings" : "resorts"}.
+                back soon or explore other {listingFrom === "skates" ? "rinks" : "resorts"}.
               </p>
               <Link
                 href={parentHref}
                 className="inline-flex items-center mt-6 px-6 py-3 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 transition-colors"
               >
                 {listingFrom === "skates"
-                  ? "Browse skating rings"
+                  ? "Browse skating rinks"
                   : "Browse ski slopes"}
                 <FiArrowRight className="ml-2 w-5 h-5" />
               </Link>

@@ -91,7 +91,7 @@ export default function ContactPage() {
                     Booking &amp; support
                   </p>
                   <p className="text-slate-600 text-sm mt-1">
-                    For help with existing bookings (ski slopes, skating rings,
+                    For help with existing bookings (ski slopes, skating rinks,
                     tubing, or snowboarding), include your booking reference in
                     your message.
                   </p>

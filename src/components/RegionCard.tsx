@@ -36,7 +36,7 @@ export default function RegionCard({
   const href = variant === "skate" ? `/skates/${slug}` : `/${slug}`;
   const ariaLabel =
     variant === "skate"
-      ? `View skating rings in ${name}`
+      ? `View skating rinks in ${name}`
       : `View ski resorts in ${name}`;
 
   return (

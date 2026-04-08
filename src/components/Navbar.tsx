@@ -84,7 +84,7 @@ export default function Navbar() {
               prefetch={true}
               className={`${textColor} ${hoverColor} transition-colors`}
             >
-              Skating Rings
+              Skating Rinks
             </Link>
             <Link
               href="/about"
@@ -119,7 +119,7 @@ export default function Navbar() {
                 className="block text-gray-800 hover:text-sky-600 py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Skating Rings
+                Skating Rinks
               </Link>
               <Link
                 href="/about"

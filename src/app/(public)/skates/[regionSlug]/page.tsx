@@ -65,10 +65,10 @@ export default async function SkatingRegionPage({ params }: Props) {
       regionName={regionName}
       activityLabel="Ice Skating"
       itemLabel="venue"
-      itemLabelPlural="rings"
+      itemLabelPlural="rinks"
       basePath="/skates"
       listingFrom="skates"
-      emptyMessage="Try adjusting your search or filters to find skating rings in this region."
+      emptyMessage="Try adjusting your search or filters to find skating rinks in this region."
       heroImageUrl={heroImageUrl}
     />
   );

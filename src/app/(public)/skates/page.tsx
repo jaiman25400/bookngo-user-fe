@@ -292,8 +292,8 @@ const SkatesPage = () => {
             <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-sky-500 animate-spin" />
             <span className="absolute inset-0 m-auto text-3xl">⛸️</span>
           </div>
-          <p className="text-slate-700 text-lg font-medium">Loading skating rings...</p>
-          <p className="text-slate-500 text-sm mt-1">Finding skating rings near you</p>
+          <p className="text-slate-700 text-lg font-medium">Loading skating rinks...</p>
+          <p className="text-slate-500 text-sm mt-1">Finding skating rinks near you</p>
         </div>
       </div>
     );
@@ -306,7 +306,7 @@ const SkatesPage = () => {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-red-50 border border-red-200 mb-6">
             <FiAlertCircle className="w-10 h-10 text-red-500" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Error loading skating rings</h2>
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">Error loading skating rinks</h2>
           <p className="text-slate-600 mb-8">{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -330,10 +330,10 @@ const SkatesPage = () => {
             <span className="text-sky-100 font-semibold text-sm uppercase tracking-wider">Ice Skating</span>
           </div>
           <h1 className="text-3xl xl:text-4xl font-bold text-white tracking-tight">
-            Find skating rings
+            Find skating rinks
           </h1>
           <p className="text-white/90 mt-2 text-sm">
-            {venues.length} skating ring{venues.length !== 1 ? "s" : ""} across Canada — hover skating icons for details, click to visit
+            {venues.length} skating rink{venues.length !== 1 ? "s" : ""} across Canada — hover skating icons for details, click to visit
           </p>
         </div>
 
@@ -342,7 +342,7 @@ const SkatesPage = () => {
             <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-sky-500 transition-colors" />
             <input
               type="text"
-              placeholder="Search by skating ring or city..."
+              placeholder="Search by skating rink or city..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-12 py-3.5 bg-white border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-sky-500/40 focus:border-sky-400 outline-none transition-all"
@@ -460,7 +460,7 @@ const SkatesPage = () => {
               <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4 text-3xl">
                 ⛸️
               </div>
-              <h3 className="text-xl font-semibold text-slate-800 mb-2">No skating rings found</h3>
+              <h3 className="text-xl font-semibold text-slate-800 mb-2">No skating rinks found</h3>
               <p className="text-slate-500 mb-6">Try a different search term</p>
               <button
                 onClick={() => setSearchQuery("")}

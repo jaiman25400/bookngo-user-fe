@@ -39,7 +39,7 @@ export default function AboutPage() {
     {
       title: "Ice Skating",
       description:
-        "Find indoor and outdoor skating rings across Canada, from city favorites to scenic winter trails. Book quickly and get on the ice sooner. Check session times, rink features, and family-friendly options to plan a smoother outing.",
+        "Find indoor and outdoor skating rinks across Canada, from city favorites to scenic winter trails. Book quickly and get on the ice sooner. Check session times, rink features, and family-friendly options to plan a smoother outing.",
       image: IMG.skating,
     },
     {
@@ -58,7 +58,7 @@ export default function AboutPage() {
 
   const values = [
     { icon: FiZap, title: "Easy booking", description: "Simple, clear booking so you spend less time planning and more time on the snow and ice." },
-    { icon: FiShield, title: "Trusted partners", description: "We work with verified resorts, skating rings, and parks so you can book with confidence." },
+    { icon: FiShield, title: "Trusted partners", description: "We work with verified resorts, skating rinks, and parks so you can book with confidence." },
     { icon: FiMapPin, title: "Canadian focus", description: "We are focused on winter experiences across Canada — from coast to coast." },
     { icon: FiHeart, title: "Real support", description: "Need help? Our team is here for questions about your booking or your next adventure." },
   ];
@@ -105,7 +105,7 @@ export default function AboutPage() {
               without jumping between multiple websites.
             </p>
             <p className="text-slate-600 text-lg leading-relaxed">
-              Today, we work with resorts, skating rings, and winter parks
+              Today, we work with resorts, skating rinks, and winter parks
               across Canada to make that possible. Whether you&apos;re planning a
               weekend trip or a same-day outing, Book N Go helps you spend less
               time searching and more time enjoying winter.
@@ -224,7 +224,7 @@ export default function AboutPage() {
             Ready to get started?
           </h2>
           <p className="text-slate-600 mb-8">
-            Explore ski slopes and skating rings near you.
+            Explore ski slopes and skating rinks near you.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
@@ -238,7 +238,7 @@ export default function AboutPage() {
               href="/skates"
               className="inline-flex items-center bg-slate-200 hover:bg-slate-300 text-slate-800 px-6 py-3 rounded-xl font-semibold transition-colors"
             >
-              Skating Rings
+              Skating Rinks
               <FiArrowRight className="ml-2 w-4 h-4" />
             </Link>
             <Link

@@ -47,9 +47,9 @@ export default function HomePage() {
               <Link
                 href="/skates"
                 className="group inline-flex items-center justify-center bg-gray-900/90 hover:bg-gray-900 text-white border border-white/30 px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-base sm:text-lg font-semibold transition-all duration-300"
-                aria-label="Browse skating rings and ice skating"
+                aria-label="Browse skating rinks and ice skating"
               >
-                Browse skating rings
+                Browse skating rinks
                 <FiArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -87,7 +87,7 @@ export default function HomePage() {
             Stay in the loop
           </h2>
           <p className="text-slate-300 text-base md:text-lg mb-8">
-            Get updates on new resorts, skating rings, and seasonal offers.
+            Get updates on new resorts, skating rinks, and seasonal offers.
           </p>
           <NewsletterForm />
         </div>
@@ -109,7 +109,7 @@ export default function HomePage() {
                 Our goal is to help more people enjoy winter outdoors.
               </h3>
               <p className="text-slate-600 leading-relaxed mb-5">
-                Easily discover and book trusted ski resorts and skating rings
+                Easily discover and book trusted ski resorts and skating rinks
                 across Canada. Whether it is your first season or you are a
                 long-time winter enthusiast, we help you find a destination
                 that matches your style.

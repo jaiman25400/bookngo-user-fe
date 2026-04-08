@@ -54,7 +54,7 @@ export function bookingPath(
 
 export function listingParent(from: ListingFrom): { href: string; label: string } {
   if (from === "skates") {
-    return { href: "/skates", label: "Skating Rings" };
+    return { href: "/skates", label: "Skating Rinks" };
   }
   return { href: "/skiing", label: "Ski Slopes" };
 }
