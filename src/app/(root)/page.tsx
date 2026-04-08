@@ -1,28 +1,17 @@
-import Image from "next/image";
 import Link from "next/link";
 import RegionsScroll from "../../components/RegionsScroll";
 import SkatingRegionsSection from "../../components/SkatingRegionsSection";
 import { FiArrowRight, FiMail, FiInfo, FiPhone } from "react-icons/fi";
 import NewsletterForm from "../../components/NewsletterForm";
 import HomeVendorSearch from "../../components/HomeVendorSearch";
+import HeroWinterBackground from "../../components/HeroWinterBackground";
 
 export default function HomePage() {
   return (
     <>
       {/* Hero Section */}
       <div className="relative min-h-screen pt-16">
-        <div className="fixed inset-0 -z-50">
-          <Image
-            src="/images/home-bg.jpg"
-            alt="Winter ski resort landscape"
-            fill
-            priority
-            className="object-cover"
-            quality={90}
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
-        </div>
+        <HeroWinterBackground />
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full min-h-[calc(100vh-4rem)] flex items-center justify-center text-center">
           <div className="max-w-3xl">
