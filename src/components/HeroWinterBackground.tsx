@@ -26,14 +26,36 @@ const WINTER_HERO_IMAGES = [
 
 export default function HeroWinterBackground() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [preloaded, setPreloaded] = useState<boolean[]>(
+    WINTER_HERO_IMAGES.map((_, index) => index === 0)
+  );
+
+  useEffect(() => {
+    WINTER_HERO_IMAGES.forEach((image, index) => {
+      if (index === 0) return;
+      const img = new window.Image();
+      img.src = image.src;
+      img.onload = () => {
+        setPreloaded((prev) => {
+          if (prev[index]) return prev;
+          const next = [...prev];
+          next[index] = true;
+          return next;
+        });
+      };
+    });
+  }, []);
 
   useEffect(() => {
     const intervalId = window.setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % WINTER_HERO_IMAGES.length);
+      setActiveIndex((prev) => {
+        const nextIndex = (prev + 1) % WINTER_HERO_IMAGES.length;
+        return preloaded[nextIndex] ? nextIndex : prev;
+      });
     }, SLIDESHOW_INTERVAL_MS);
 
     return () => window.clearInterval(intervalId);
-  }, []);
+  }, [preloaded]);
 
   const dots = useMemo(
     () =>
@@ -65,11 +87,20 @@ export default function HeroWinterBackground() {
               alt={image.alt}
               fill
               priority={index === 0}
+              loading="eager"
               className={`object-cover will-change-transform ${
                 isActive ? "animate-heroKenBurns" : ""
               }`}
               quality={90}
               sizes="100vw"
+              onLoad={() => {
+                setPreloaded((prev) => {
+                  if (prev[index]) return prev;
+                  const next = [...prev];
+                  next[index] = true;
+                  return next;
+                });
+              }}
             />
           </div>
         );
