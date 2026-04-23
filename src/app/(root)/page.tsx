@@ -1,132 +1,325 @@
+import Image from "next/image";
 import Link from "next/link";
-import RegionsScroll from "../../components/RegionsScroll";
-import SkatingRegionsSection from "../../components/SkatingRegionsSection";
-import { FiArrowRight, FiMail, FiInfo, FiPhone } from "react-icons/fi";
+import {
+  FiArrowRight,
+  FiInfo,
+  FiPhone,
+  FiMapPin,
+  FiMountain,
+  FiDisc,
+} from "react-icons/fi";
 import NewsletterForm from "../../components/NewsletterForm";
 import HomeVendorSearch from "../../components/HomeVendorSearch";
-import HeroWinterBackground from "../../components/HeroWinterBackground";
+
+const FEATURED_DESTINATIONS = [
+  {
+    name: "Whistler Blackcomb",
+    location: "British Columbia",
+    href: "/vendor/whistler-blackcomb?from=skiing",
+    type: "Ski Resort",
+    icon: <FiMountain className="h-3.5 w-3.5" />,
+    image:
+      "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80",
+    tall: true,
+  },
+  {
+    name: "Blue Mountain",
+    location: "Ontario",
+    href: "/skiing/Ontario",
+    type: "Ski Resort",
+    icon: <FiMountain className="h-3.5 w-3.5" />,
+    image:
+      "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Rideau Canal Skateway",
+    location: "Ontario",
+    href: "/vendor/rideau-canal-skateway?from=skates",
+    type: "Skating Rink",
+    icon: <FiDisc className="h-3.5 w-3.5" />,
+    image:
+      "https://images.unsplash.com/photo-1517299321609-52687d1bc55a?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Mont-Tremblant",
+    location: "Quebec",
+    href: "/skiing/Quebec",
+    type: "Ski Resort",
+    icon: <FiMountain className="h-3.5 w-3.5" />,
+    image:
+      "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=800&q=80",
+  },
+  {
+    name: "Lake Louise",
+    location: "Alberta",
+    href: "/skiing/British-Columbia",
+    type: "Ski Resort",
+    icon: <FiMountain className="h-3.5 w-3.5" />,
+    image:
+      "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80",
+  },
+] as const;
+
+const REGION_CARDS = [
+  {
+    name: "Ontario",
+    skiBadge: "12 resorts",
+    skateBadge: "29 rinks",
+    image:
+      "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80",
+    skiHref: "/skiing/Ontario",
+    skateHref: "/skates/Ontario",
+  },
+  {
+    name: "Quebec",
+    skiBadge: "18 resorts",
+    skateBadge: "28 rinks",
+    image:
+      "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1000&q=80",
+    skiHref: "/skiing/Quebec",
+    skateHref: "/skates/Quebec",
+  },
+  {
+    name: "British Columbia",
+    skiBadge: "9 resorts",
+    skateBadge: "19 rinks",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80",
+    skiHref: "/skiing/British-Columbia",
+    skateHref: "/skates/British-Columbia",
+  },
+  {
+    name: "Manitoba",
+    skiBadge: "7 resorts",
+    skateBadge: "15 rinks",
+    image:
+      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80",
+    skiHref: "/skiing/Mnitoba",
+    skateHref: "/skates/Mnitoba",
+  },
+  {
+    name: "New Brunswick",
+    skiBadge: "4 resorts",
+    skateBadge: "8 rinks",
+    image:
+      "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=80",
+    skiHref: "/skiing/New-Brunswick",
+    skateHref: "/skates/New-Brunswick",
+  },
+  {
+    name: "Nova Scotia",
+    skiBadge: "3 resorts",
+    skateBadge: "6 rinks",
+    image:
+      "https://images.unsplash.com/photo-1521185496955-15097b20c5fe?auto=format&fit=crop&w=1000&q=80",
+    skiHref: "/skiing/Nova-Scotia",
+    skateHref: "/skates/Nova-Scotia",
+  },
+] as const;
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section */}
-      <div className="relative min-h-screen pt-16">
-        <HeroWinterBackground />
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full min-h-[calc(100vh-4rem)] flex items-center justify-center text-center">
-          <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-5 leading-tight drop-shadow-lg tracking-tight">
-              Book Your Winter Adventure
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-7 leading-relaxed drop-shadow-md max-w-2xl mx-auto">
-              Discover the best ski resorts and winter activities across Canada
-            </p>
-            <div className="mb-7 sm:mb-8">
-              <HomeVendorSearch />
-            </div>
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
-              <Link
-                href="/skiing"
-                className="group inline-flex items-center justify-center bg-white hover:bg-gray-100 text-gray-900 px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-base sm:text-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-                aria-label="Browse ski resorts"
-              >
-                Browse ski resorts
-                <FiArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link
-                href="/skates"
-                className="group inline-flex items-center justify-center bg-gray-900/90 hover:bg-gray-900 text-white border border-white/30 px-6 py-3.5 sm:px-8 sm:py-4 rounded-xl text-base sm:text-lg font-semibold transition-all duration-300"
-                aria-label="Browse skating rinks and ice skating"
-              >
-                Browse skating rinks
-                <FiArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-          </div>
+      {/* Hero */}
+      <section className="relative isolate overflow-hidden bg-[#0d1b2a] pt-24 pb-20 text-center text-white">
+        <div className="absolute inset-0 opacity-60">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_70%,rgba(95,176,229,0.22),transparent_60%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_20%,rgba(95,176,229,0.18),transparent_55%)]" />
         </div>
-
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1.5 h-3 bg-white/50 rounded-full mt-2" />
+        <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-sky-300/30 bg-sky-300/10 px-4 py-1.5 text-xs uppercase tracking-wide text-sky-200">
+            <span>❄</span> Canada&apos;s winter activity platform
           </div>
-        </div>
-      </div>
-
-      {/* Ice skating by region */}
-      <section className="bg-white relative z-10 border-t border-slate-200 py-10 sm:py-12 md:py-16">
-        <div className="mx-auto w-full max-w-none px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-14">
-          <SkatingRegionsSection />
+          <h1 className="mx-auto max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+            Book Your Winter Adventure
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-base text-slate-300 sm:text-lg">
+            Discover ski resorts and skating rinks across Canada, all in one place.
+          </p>
+          <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-white/15 bg-white/5 p-4 sm:p-6 backdrop-blur">
+            <HomeVendorSearch />
+          </div>
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/skiing"
+              className="inline-flex items-center rounded-full bg-sky-300 px-5 py-2.5 text-sm font-semibold text-slate-900 transition hover:opacity-90"
+            >
+              Browse ski resorts <FiArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+            <Link
+              href="/skates"
+              className="inline-flex items-center rounded-full border border-white/25 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20"
+            >
+              Browse skating rinks <FiArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Ski regions */}
-      <section className="bg-white relative z-10 border-t border-slate-200 py-10 sm:py-12 md:py-16">
-        <div className="mx-auto w-full max-w-none px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-14">
-          <RegionsScroll />
+      {/* Stats */}
+      <section className="border-y border-slate-200 bg-white py-6">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 text-center sm:grid-cols-4 sm:px-6">
+          {[
+            { value: "50+", label: "Ski resorts" },
+            { value: "120+", label: "Skating rinks" },
+            { value: "9", label: "Provinces covered" },
+            { value: "Free", label: "Always free to browse" },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+              <p className="mt-1 text-xs text-slate-500 sm:text-sm">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured */}
+      <section className="bg-white py-14 sm:py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mb-8 text-center">
+            <p className="mb-3 inline-block rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-800">
+              Popular this season
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">Featured destinations</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {FEATURED_DESTINATIONS.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`group relative overflow-hidden rounded-2xl bg-slate-900 ${
+                  item.tall ? "md:row-span-2 min-h-[420px]" : "min-h-[200px]"
+                }`}
+              >
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  className="object-cover opacity-60 transition group-hover:scale-105 group-hover:opacity-50"
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                  <span className="mb-2 inline-flex items-center gap-1 rounded-full border border-sky-300/30 bg-sky-300/15 px-2.5 py-1 text-xs text-sky-100">
+                    {item.icon}
+                    {item.type}
+                  </span>
+                  <h3 className="text-xl font-semibold tracking-tight">{item.name}</h3>
+                  <p className="mt-1 flex items-center text-sm text-slate-200">
+                    <FiMapPin className="mr-1.5 h-3.5 w-3.5" />
+                    {item.location}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Region explorer */}
+      <section className="bg-slate-50 py-14 sm:py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="mb-8 text-center">
+            <p className="mb-3 inline-block rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-800">
+              Explore by province
+            </p>
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">Find venues near you</h2>
+          </div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {REGION_CARDS.map((region) => (
+              <div key={region.name} className="group relative overflow-hidden rounded-xl bg-slate-900">
+                <Image
+                  src={region.image}
+                  alt={region.name}
+                  width={640}
+                  height={460}
+                  className="h-52 w-full object-cover opacity-60 transition group-hover:scale-105 group-hover:opacity-50"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/10 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+                  <p className="text-lg font-semibold">{region.name}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <Link
+                      href={region.skiHref}
+                      className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold hover:bg-white/25"
+                    >
+                      ⛷ {region.skiBadge}
+                    </Link>
+                    <Link
+                      href={region.skateHref}
+                      className="rounded-full border border-white/30 bg-white/15 px-3 py-1 text-xs font-semibold hover:bg-white/25"
+                    >
+                      ⛸ {region.skateBadge}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Newsletter */}
-      <section className="relative z-10 py-14 md:py-20 bg-slate-900 text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl text-center">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 mb-6">
-            <FiMail className="w-6 h-6 text-white" />
-          </div>
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight mb-3">
+      <section className="bg-[#0d1b2a] py-14 text-white">
+        <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
+          <p className="mb-3 inline-block rounded-full bg-sky-300/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-sky-200">
             Stay in the loop
-          </h2>
-          <p className="text-slate-300 text-base md:text-lg mb-8">
-            Get updates on new resorts, skating rinks, and seasonal offers.
           </p>
-          <NewsletterForm />
+          <h2 className="text-3xl font-bold tracking-tight">Fresh snow alerts, delivered</h2>
+          <p className="mx-auto mt-3 max-w-lg text-slate-300">
+            Get updates on new resorts, ice conditions, and seasonal deals before anyone else.
+          </p>
+          <div className="mt-8">
+            <NewsletterForm />
+          </div>
         </div>
       </section>
 
-      {/* Mission and partner CTA */}
-      <section className="relative z-10 py-12 md:py-16 bg-white border-t border-slate-200">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 max-w-6xl mx-auto">
+      {/* Partner cards */}
+      <section className="border-t border-slate-200 bg-slate-50 py-12 sm:py-16">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <Link
               href="/about"
-              className="group rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 p-6 md:p-8 transition-all"
+              className="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:shadow-lg"
               aria-label="About Us"
             >
-              <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white border border-slate-200 mb-4">
-                <FiInfo className="w-5 h-5 text-slate-700" />
+              <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-slate-50">
+                <FiInfo className="h-5 w-5 text-slate-700" />
               </div>
-              <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
+              <h3 className="mb-3 text-xl font-bold text-slate-900 sm:text-2xl">
                 Our goal is to help more people enjoy winter outdoors.
               </h3>
-              <p className="text-slate-600 leading-relaxed mb-5">
+              <p className="mb-5 text-slate-600">
                 Easily discover and book trusted ski resorts and skating rinks
                 across Canada. Whether it is your first season or you are a
                 long-time winter enthusiast, we help you find a destination
                 that matches your style.
               </p>
-              <span className="inline-flex items-center text-sky-700 font-semibold">
+              <span className="inline-flex items-center font-semibold text-sky-700">
                 Learn about us
-                <FiArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
             </Link>
             <Link
               href="/contact"
-              className="group rounded-2xl border border-slate-200 bg-slate-50 hover:bg-slate-100 p-6 md:p-8 transition-all"
+              className="group rounded-2xl border border-slate-200 bg-white p-6 transition hover:shadow-lg"
               aria-label="Contact Us"
             >
-              <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white border border-slate-200 mb-4">
-                <FiPhone className="w-5 h-5 text-slate-700" />
+              <div className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-slate-50">
+                <FiPhone className="h-5 w-5 text-slate-700" />
               </div>
-              <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">
+              <h3 className="mb-3 text-xl font-bold text-slate-900 sm:text-2xl">
                 Are you a resort or skating venue owner?
               </h3>
-              <p className="text-slate-600 leading-relaxed mb-5">
+              <p className="mb-5 text-slate-600">
                 BookNGo can help you grow your business with online visibility,
                 better booking flow, and customer support tools. Contact us to
                 discuss partnership and onboarding.
               </p>
-              <span className="inline-flex items-center text-sky-700 font-semibold">
+              <span className="inline-flex items-center font-semibold text-sky-700">
                 Contact us
-                <FiArrowRight className="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                <FiArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
             </Link>
           </div>
