@@ -1,23 +1,34 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import {
   FiArrowRight,
   FiInfo,
   FiPhone,
   FiMapPin,
-  FiMountain,
+  FiCompass,
   FiDisc,
 } from "react-icons/fi";
 import NewsletterForm from "../../components/NewsletterForm";
 import HomeVendorSearch from "../../components/HomeVendorSearch";
 
-const FEATURED_DESTINATIONS = [
+type FeaturedDestination = {
+  name: string;
+  location: string;
+  href: string;
+  type: string;
+  icon: ReactNode;
+  image: string;
+  tall?: boolean;
+};
+
+const FEATURED_DESTINATIONS: FeaturedDestination[] = [
   {
     name: "Whistler Blackcomb",
     location: "British Columbia",
     href: "/vendor/whistler-blackcomb?from=skiing",
     type: "Ski Resort",
-    icon: <FiMountain className="h-3.5 w-3.5" />,
+    icon: <FiCompass className="h-3.5 w-3.5" />,
     image:
       "https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=80",
     tall: true,
@@ -27,7 +38,7 @@ const FEATURED_DESTINATIONS = [
     location: "Ontario",
     href: "/skiing/Ontario",
     type: "Ski Resort",
-    icon: <FiMountain className="h-3.5 w-3.5" />,
+    icon: <FiCompass className="h-3.5 w-3.5" />,
     image:
       "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
   },
@@ -45,7 +56,7 @@ const FEATURED_DESTINATIONS = [
     location: "Quebec",
     href: "/skiing/Quebec",
     type: "Ski Resort",
-    icon: <FiMountain className="h-3.5 w-3.5" />,
+    icon: <FiCompass className="h-3.5 w-3.5" />,
     image:
       "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=800&q=80",
   },
@@ -54,11 +65,11 @@ const FEATURED_DESTINATIONS = [
     location: "Alberta",
     href: "/skiing/British-Columbia",
     type: "Ski Resort",
-    icon: <FiMountain className="h-3.5 w-3.5" />,
+    icon: <FiCompass className="h-3.5 w-3.5" />,
     image:
       "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80",
   },
-] as const;
+];
 
 const REGION_CARDS = [
   {

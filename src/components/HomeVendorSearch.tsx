@@ -194,7 +194,6 @@ export default function HomeVendorSearch() {
           className="w-full pl-12 pr-4 py-3.5 sm:py-4 rounded-2xl bg-white/95 text-slate-900 placeholder:text-slate-500 border border-white/40 shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-400/80 focus:border-transparent backdrop-blur-sm text-base disabled:opacity-70"
           aria-autocomplete="list"
           aria-controls="home-vendor-search-list"
-          aria-expanded={showPanel}
         />
       </div>
 
