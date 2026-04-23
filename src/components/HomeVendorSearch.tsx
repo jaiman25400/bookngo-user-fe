@@ -50,7 +50,13 @@ function matchScore(name: string, city: string, query: string): number {
   return 3;
 }
 
-export default function HomeVendorSearch() {
+type HomeVendorSearchProps = {
+  placeholder?: string;
+};
+
+export default function HomeVendorSearch({
+  placeholder = "Search by venue name (e.g. Boler Mountain)…",
+}: HomeVendorSearchProps) {
   const router = useRouter();
   const [vendors, setVendors] = useState<MergedVendor[]>([]);
   const [loadState, setLoadState] = useState<"idle" | "loading" | "ready" | "error">(
@@ -182,7 +188,7 @@ export default function HomeVendorSearch() {
           id="home-vendor-search"
           type="search"
           autoComplete="off"
-          placeholder="Search by venue name (e.g. Boler Mountain)…"
+          placeholder={placeholder}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);

@@ -29,7 +29,7 @@ export default function Navbar() {
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         isHome && !isScrolled
-          ? "bg-transparent"
+          ? "bg-slate-950/45 backdrop-blur-md"
           : "bg-white shadow-lg"
       }`}
     >
@@ -43,7 +43,7 @@ export default function Navbar() {
             <Link
               href="/"
               prefetch={true}
-              className={`ml-2 text-xl font-bold ${textColor} hover:opacity-80 transition-opacity`}
+              className={`ml-2 text-xl font-bold ${textColor} hover:opacity-80 transition-opacity ${isHome && !isScrolled ? "drop-shadow-sm" : ""}`}
             >
               BOOK N GO
             </Link>
