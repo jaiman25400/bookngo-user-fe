@@ -30,7 +30,7 @@ const FEATURED_DESTINATIONS: FeaturedDestination[] = [
   {
     name: "Blue Mountain Resort",
     location: "Ontario",
-    href: "/skiing/Ontario",
+    href: "/Ontario",
     type: "Ski Resort",
     icon: <FiCompass className="h-3.5 w-3.5" />,
     image:
@@ -40,7 +40,7 @@ const FEATURED_DESTINATIONS: FeaturedDestination[] = [
   {
     name: "Ontario Ski Escapes",
     location: "Ontario",
-    href: "/skiing/Ontario",
+    href: "/Ontario",
     type: "Ski Resort",
     icon: <FiCompass className="h-3.5 w-3.5" />,
     image:
@@ -82,7 +82,7 @@ const REGION_CARDS = [
     skateBadge: "29 rinks",
     image:
       "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1000&q=80",
-    skiHref: "/skiing/Ontario",
+    skiHref: "/Ontario",
     skateHref: "/skates/Ontario",
   },
   {
@@ -91,7 +91,7 @@ const REGION_CARDS = [
     skateBadge: "28 rinks",
     image:
       "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1000&q=80",
-    skiHref: "/skiing/Quebec",
+    skiHref: "/Quebec",
     skateHref: "/skates/Quebec",
   },
   {
@@ -100,7 +100,7 @@ const REGION_CARDS = [
     skateBadge: "19 rinks",
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80",
-    skiHref: "/skiing/British-Columbia",
+    skiHref: "/British-Columbia",
     skateHref: "/skates/British-Columbia",
   },
   {
@@ -109,8 +109,8 @@ const REGION_CARDS = [
     skateBadge: "15 rinks",
     image:
       "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1000&q=80",
-    skiHref: "/skiing/Mnitoba",
-    skateHref: "/skates/Mnitoba",
+    skiHref: "/Manitoba",
+    skateHref: "/skates/Manitoba",
   },
   {
     name: "New Brunswick",
@@ -118,7 +118,7 @@ const REGION_CARDS = [
     skateBadge: "8 rinks",
     image:
       "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=80",
-    skiHref: "/skiing/New-Brunswick",
+    skiHref: "/New-Brunswick",
     skateHref: "/skates/New-Brunswick",
   },
   {
@@ -127,19 +127,15 @@ const REGION_CARDS = [
     skateBadge: "6 rinks",
     image:
       "https://images.unsplash.com/photo-1521185496955-15097b20c5fe?auto=format&fit=crop&w=1000&q=80",
-    skiHref: "/skiing/Nova-Scotia",
+    skiHref: "/Nova-Scotia",
     skateHref: "/skates/Nova-Scotia",
   },
 ] as const;
 
 export default function HomePage() {
-  const [heroMode, setHeroMode] = useState<ListingFrom>("skates");
   const [regionMode, setRegionMode] = useState<ListingFrom>("skiing");
 
-  const heroSearchPlaceholder =
-    heroMode === "skiing"
-      ? "Search ski resorts by name..."
-      : "Search skating rinks by name...";
+  const heroSearchPlaceholder = "Search resort or skating rink by name...";
 
   const regionCards = useMemo(
     () =>
@@ -171,32 +167,6 @@ export default function HomePage() {
             Discover ski resorts and skating rinks across Canada, all in one place.
           </p>
           <div className="mx-auto mt-10 max-w-2xl rounded-2xl border border-white/15 bg-white/10 p-4 sm:p-6 backdrop-blur">
-            <div className="mb-4 flex items-center justify-center">
-              <div className="inline-flex rounded-full border border-white/15 bg-white/10 p-1">
-                <button
-                  type="button"
-                  onClick={() => setHeroMode("skiing")}
-                  className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
-                    heroMode === "skiing"
-                      ? "bg-white text-slate-900"
-                      : "text-white/80 hover:text-white"
-                  }`}
-                >
-                  ⛷ Ski Resorts
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setHeroMode("skates")}
-                  className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${
-                    heroMode === "skates"
-                      ? "bg-sky-300 text-slate-900"
-                      : "text-white/80 hover:text-white"
-                  }`}
-                >
-                  ⛸ Skating Rinks
-                </button>
-              </div>
-            </div>
             <HomeVendorSearch placeholder={heroSearchPlaceholder} />
           </div>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">

@@ -7,7 +7,7 @@ const regions = [
   { name: "Ontario", slug: "Ontario" },
   { name: "Quebec", slug: "Quebec" },
   { name: "British Columbia", slug: "British-Columbia" },
-  { name: "Manitoba", slug: "Mnitoba" },
+  { name: "Manitoba", slug: "Manitoba" },
   { name: "New Brunswick", slug: "New-Brunswick" },
   { name: "Nova Scotia", slug: "Nova-Scotia" },
 ];
@@ -19,7 +19,7 @@ const REGION_IMAGES: Record<string, string> = {
     "https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1600&q=80",
   "British-Columbia":
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
-  Mnitoba:
+  Manitoba:
     "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80",
   "New-Brunswick":
     "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",

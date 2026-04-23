@@ -19,7 +19,7 @@ const REGION_IMAGES: Record<string, string> = {
   // WallpapersDen blocks server/CDN requests (403); Unsplash works with next/image
   "British-Columbia":
     "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80",
-  Mnitoba:
+  Manitoba:
     "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80", // Prairie winter
   "New-Brunswick":
     "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80", // Coastal / lighthouse

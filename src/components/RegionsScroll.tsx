@@ -12,7 +12,7 @@ const regions = [
   { name: "Ontario", slug: "Ontario" },
   { name: "Quebec", slug: "Quebec" },
   { name: "British Columbia", slug: "British-Columbia" },
-  { name: "Manitoba", slug: "Mnitoba" },
+  { name: "Manitoba", slug: "Manitoba" },
   { name: "New Brunswick", slug: "New-Brunswick" },
   { name: "Nova Scotia", slug: "Nova-Scotia" },
 ];
